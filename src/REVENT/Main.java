@@ -45,13 +45,11 @@ public class Main {
              String memberActionChoice = scan.next();
             switch (memberActionChoice){
                 case "N" : System.out.println("Ny Medlem. Ange personnummer och för och efternamn separerat med mellanslag.");
-                String memberId = scan.next();String memberFname = scan.next();String memberLname = scan.next();
-                System.out.println(memberService.newMemberIndividual(memberId,memberFname+memberLname,"Privat"));
-                Member Kickan = new Member("920619","Kickan Johansson","Privatperson");
-                   System.out.println(Kickan);
-                   scan.nextLine();
-                    break;
-                case "S" : System.out.println("Söka Medlemslistan. Ange Namn eller Personnummer på personen du vill söka.");break;
+                String memberId = scan.next();String memberFname = scan.next()+" ";String memberLname = scan.next();
+                memberService.newMemberIndividual(memberId,memberFname+memberLname,"Privat");
+                                   scan.nextLine();break;
+                case "S" : System.out.println("Söka Medlemslistan. Ange Namn eller Personnummer på personen du vill söka.");
+                    memberService.printMemberReg(); break;
                 case "F" : System.out.println("Förändringar. Vill du ta bort en medlem ur listan helt? Ange X, enter." +
                         "\n Önskar du förändra befintlig medlems info? Ange F, sedan enter.");break;
                 case "R" : System.out.println("Avslutar"); memberLoop = false; break;
@@ -59,7 +57,6 @@ public class Main {
 
           // utanför programmet..
            }
-
 
     }
 
