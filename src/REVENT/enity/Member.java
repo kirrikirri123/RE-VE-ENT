@@ -16,6 +16,7 @@ public class Member {
         this.id = id;
         this.name = name;
         this.memberStatus = memberStatus;
+    // vad händer med listan??
     }
 
     public String getId() {
@@ -42,9 +43,8 @@ public class Member {
     public void setHistoryMember(List<Rental> historyMember) {
         this.historyMember = historyMember;
         }
-
 @Override
     public String toString() {
-       return "Id-nummer:"+ this.id + "\n Namn:"+ this.name + "\n Privat / Förening:" + this.memberStatus;
+       return "Id-nummer:"+ this.id + "\n Namn:"+ this.name + "\n Privat / Förening: " + this.memberStatus;
 }
 }

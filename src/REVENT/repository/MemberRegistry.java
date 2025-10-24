@@ -1,17 +1,20 @@
 package REVENT.repository;
 
+import REVENT.enity.Member;
+
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class MemberRegistry {
-private HashMap<String,String> MemberRegistry = new HashMap<>();
+protected HashSet<Member> memberRegistryList = new HashSet<>();
 
 public MemberRegistry(){}
 
-    public HashMap<String, String> getMemberRegistry() {
-        return MemberRegistry;
+    public HashSet<Member> getMemberRegistryList() {
+        return memberRegistryList;
     }
-        public void setMemberRegistry(HashMap<String,String> memberRegistry){
-    this.MemberRegistry = memberRegistry;
+        public void setMemberRegistry(HashSet<Member> memberRegistryList){
+        this.memberRegistryList = memberRegistryList; // går denna ens att använda??
     }
 }
 
