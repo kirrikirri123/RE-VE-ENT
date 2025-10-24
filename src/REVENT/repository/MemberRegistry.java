@@ -1,7 +1,19 @@
 package REVENT.repository;
 
-public class MemberRegistry {
-    // databas för medlemsregister
-    // Vill vi spara objekten eller id och namn?
+import java.util.HashMap;
 
+public class MemberRegistry {
+private HashMap<String,String> MemberRegistry = new HashMap<>();
+
+public MemberRegistry(){}
+
+    public HashMap<String, String> getMemberRegistry() {
+        return MemberRegistry;
+    }
+        public void setMemberRegistry(HashMap<String,String> memberRegistry){
+    this.MemberRegistry = memberRegistry;
+    }
 }
+
+
+
