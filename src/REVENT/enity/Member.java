@@ -1,5 +1,7 @@
 package REVENT.enity;
 
+import REVENT.Rental;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ public class Member {
     private String id;
     private String name;
     private String memberStatus;
-    private List<Item> historyMember = new LinkedList<>();
+    private List<Rental> historyMember = new LinkedList<>();
 
     public Member (){}
     public Member (String id, String name, String memberStatus) {
