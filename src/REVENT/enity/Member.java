@@ -36,10 +36,10 @@ public class Member {
     public void setMemberStatus(String memberStatus) {
         this.memberStatus = memberStatus;
     }
-    public List<Item> getHistoryMember() {
+    public List<Rental> getHistoryMember() {
         return historyMember;
     }
-    public void setHistoryMember(List<Item> historyMember) {
+    public void setHistoryMember(List<Rental> historyMember) {
         this.historyMember = historyMember;
         }
 

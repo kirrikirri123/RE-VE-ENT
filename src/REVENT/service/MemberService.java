@@ -1,20 +1,18 @@
 package REVENT.service;
 
+import REVENT.enity.Member;
 import REVENT.repository.MemberRegistry;
 
-public class MemberService extends MemberRegistry {
+public class MemberService {
     //hanterar member
+    MemberRegistry memberRegistry = new MemberRegistry();
 
-
-
-
-
-    public void newMember(){
-        //add new member to list
-    }
+    public Member newMemberIndividual(String id, String name, String memberStatus){
+        Member objName = new Member(id,name,memberStatus);
+    return objName;}
 
     public void searchMember(){
-        //search member in list
+        System.out.println(memberRegistry.getMemberRegistry());
     }
 
     public void removeMember(){

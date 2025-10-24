@@ -7,15 +7,15 @@ public class Rental {
 
     public Rental (){}
 
-    public Rental(String time){
+   /* public Rental(String time){
         this.rentTime = rentalTime(time);
     }
 
-public int rentalTime(String rentTime){
+/*public int rentalTime(String rentTime){
         //if (rentTime.isEmpty()) throw Exeption av nått slag.
 
 return ;
-    }
+    }*/
 public int rentMonthly(){
      //discount february?
         int feb =0;
