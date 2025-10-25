@@ -7,5 +7,17 @@ import java.util.List;
 
 public class Inventory {
     // Databas för produkter.
-    List<Item> Items = new ArrayList<>();
+    protected List<Item> itemsList = new ArrayList<>();
+
+
+    public Inventory (){}
+
+    public List<Item> getItemsList(){
+        return itemsList;
+    }
+
+
+
+
+
 }

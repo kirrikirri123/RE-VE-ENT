@@ -12,6 +12,8 @@ public class Main {
         MemberService memberService = new MemberService(); //Det enda objektet vi vill ha av denna klass.
         RentalService rentalService = new RentalService(); // Det enda objektet vi vill ha av denna klass.
         boolean isRunning = true;
+        memberService.defaultList();// default medlemmar för att det ska finnas nånting att testa med.
+        rentalService.defaultList();//default produkter för att det ska finnas nånting att testa med.
         while (isRunning) {
             System.out.println("RevENTs uthyrning");
             System.out.println("[1] Medlemmar: Skapa ny medlem, gör förändringar i medlemslista." +
@@ -23,7 +25,9 @@ public class Main {
             int userChoice = scan.nextInt(); // felhantering
             switch (userChoice) {
                 case 1: isRunning= false; break;
-                case 2: System.out.println("Produkter"); break;
+                case 2: System.out.println("Produkter");
+                rentalService.printItemList();
+                     break;
                 case 3: System.out.println("Uthyrning"); break;
                 case 4: System.out.println("Ekonomi"); break;
                 case 5:System.out.println("Avsluta programmet"); isRunning = false; break;
@@ -32,7 +36,7 @@ public class Main {
             boolean memberLoop = true;
             while(memberLoop) {
              System.out.println("Medlemslista\n Välj åtgärd: [N] Ny medlem, [S] Sök medlem, [U] Uppdatera / ta bort befintlig medlem.[H] Huvudmeny");
-             String memberActionChoice = scan.next();
+                            String memberActionChoice = scan.next();
             switch (memberActionChoice){
                 case "n":
                 case "N" : System.out.println("Ny Medlem. Ange personnummer och för och efternamn separerat med mellanslag.");
@@ -41,8 +45,7 @@ public class Main {
                                        scan.nextLine();break;
                 case "s":
                 case "S" : System.out.println("Sökning i Medlemslistan.");
-                    memberService.searchInfo();
-                    String userSearch = scan.nextLine();
+                    String userSearch = memberService.searchInfo("Vilken medlem letar du efter? Ange Namn eller Personnummer på personen.",scan);
                     memberService.searchMemberReg(userSearch);
                     scan.nextLine(); break;
                 case "u":
@@ -50,7 +53,7 @@ public class Main {
                         "\n Önskar du uppdatera befintlig medlemsinfo? Ange U, sedan enter.");
                         String userChange = scan.nextLine();
                         if(userChange.equalsIgnoreCase("X")){
-                            memberService.searchInfo();String userRemove = scan.nextLine(); ; memberService.removeMember(userRemove,scan);
+                        String userRemove = memberService.searchInfo("Vilken medlem letar du efter? Ange Namn eller Personnummer på personen.", scan); memberService.removeMember(userRemove,scan);
                         } else if (userChange.equalsIgnoreCase("U")) {System.out.println("Under uppbyggnad.");}
                     scan.nextLine(); break;
                 case "h":
