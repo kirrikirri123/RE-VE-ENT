@@ -3,6 +3,7 @@ package REVENT;
 import REVENT.enity.Member;
 import REVENT.service.MemberService;
 import REVENT.service.RentalService;
+import REVENT.utils.Menu;
 
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         MemberService memberService = new MemberService(); //Det enda objektet vi vill ha av denna klass.
         RentalService rentalService = new RentalService(); // Det enda objektet vi vill ha av denna klass.
+        Menu menu = new Menu();
         boolean isRunning = true;
         memberService.defaultList();// default medlemmar för att det ska finnas nånting att testa med.
         rentalService.defaultList();//default produkter för att det ska finnas nånting att testa med.
@@ -45,15 +47,18 @@ public class Main {
                                        scan.nextLine();break;
                 case "s":
                 case "S" : System.out.println("Sökning i Medlemslistan.");
-                    String userSearch = memberService.searchInfo("Vilken medlem letar du efter? Ange Namn eller Personnummer på personen.",scan);
+                     scan.nextLine(); //städare
+                    memberService.searchInfo();
+                    String userSearch = scan.nextLine();
                     memberService.searchMemberReg(userSearch);
                     scan.nextLine(); break;
                 case "u":
                 case "U" : System.out.println("Uppdateringar. Vill du ta bort en medlem ur listan helt? Ange X, enter." +
                         "\n Önskar du uppdatera befintlig medlemsinfo? Ange U, sedan enter.");
+                        scan.nextLine(); // städare
                         String userChange = scan.nextLine();
                         if(userChange.equalsIgnoreCase("X")){
-                        String userRemove = memberService.searchInfo("Vilken medlem letar du efter? Ange Namn eller Personnummer på personen.", scan); memberService.removeMember(userRemove,scan);
+                        memberService.searchInfo(); String userRemove = scan.nextLine(); memberService.removeMember(userRemove,scan);
                         } else if (userChange.equalsIgnoreCase("U")) {System.out.println("Under uppbyggnad.");}
                     scan.nextLine(); break;
                 case "h":
