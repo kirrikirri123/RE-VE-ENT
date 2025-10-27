@@ -1,22 +1,14 @@
 package REVENT.enity;
 
 public class BouncyCastle extends Item {
-    private String size;
     private boolean indoorUse;
 
 
     public BouncyCastle(){}
-    public BouncyCastle(String name,String description,double day,double weekend, double month,String size,boolean indoorUse){
+    public BouncyCastle(String name,String description,double day,double weekend, double month,boolean indoorUse){
         super(name, description, day, weekend, month);
-        this.size = size;
-        this.indoorUse = indoorUse;
-    }
 
-    public String getSize(){
-        return size;
-    }
-    public void setSize(String size) {
-        this.size = size;
+        this.indoorUse = indoorUse;
     }
 
     public boolean isIndoorUse() {
@@ -26,4 +18,7 @@ public class BouncyCastle extends Item {
         this.indoorUse = indoorUse;
 
     }
-}
+    @Override
+    public String toString(){
+    return "Produktnamn: "+ this.name + "."+ this.description + ". Godkänd för inomhusbruk: "+ this.indoorUse + ".\n Hyra - Dag: " + this.dayPrice +". Helg: "+ this.weekendPrice + ". Månad: "+ this.monthlyPrice+".";
+}}

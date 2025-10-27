@@ -12,9 +12,13 @@ public class MascotCostume extends Item {
      public String getSeason(){
         return season;
         }
-
     public void setSeason(String season) {
         this.season = season;
     }
+    @Override
+    public String toString(){
+        return "Produkt: "+ this.name + ","+ this.description + "Säsong: "+ this.season+".\n Hyra - Dag: " + this.dayPrice +". Helg: "+ this.weekendPrice + ". Månad: "+ this.monthlyPrice+".";
+    }
+
 }
 
