@@ -4,6 +4,11 @@ import REVENT.enity.BouncyCastle;
 import REVENT.enity.Item;
 import REVENT.enity.MascotCostume;
 import REVENT.database.Inventory;
+import REVENT.enity.Member;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class RentalService extends Inventory {
     //hanterar uthyrningsmetoder
@@ -31,10 +36,28 @@ public class RentalService extends Inventory {
     public void addItemToList(Item item) {
         getItemsList().add(item);
     }
-
-    public void removeItemfromList(Item item) {
-        getItemsList().remove(item); // grund metod. ej körbar
+    public void searchProd(){
+        System.out.println("Ange fullständigt namn på produkten du söker:");
     }
+
+// skulle man kunna separera nedan metod i en sökning och en  remove där i sökmetoden retuneras ett objekt som man läggas i tempLIstan?
+    public void removeItemfromList(String prod, Scanner scan) {
+        List<Item> removeI = new ArrayList<>();
+        for (Item item : getItemsList()) {
+            if (item.getName().equals(prod)) {
+                System.out.println("Hittade produkten: " + item.getName() + ", " + item.getDescription() + ". Ska produkten tas bort från listan? JA / NEJ");
+                String removeUser = scan.nextLine();
+                if (removeUser.equalsIgnoreCase("ja")) {
+                    removeI.add(item);
+                }
+            }
+        }
+        if (removeI.isEmpty()){return;}
+        itemsList.removeAll(removeI);
+        System.out.println(" Produkt borttagen.");
+        System.out.println(" Se uppdaterad lista:");printItemList();
+    }
+
 
     public void newMascotItem(String name, String description, double day, double weekend, double month, String season) {
         Item item = new MascotCostume(name, description, day, weekend, month, season);
