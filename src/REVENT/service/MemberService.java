@@ -1,8 +1,10 @@
 package REVENT.service;
 
 import REVENT.enity.Member;
-import REVENT.repository.MemberRegistry;
+import REVENT.database.MemberRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MemberService extends MemberRegistry {
@@ -17,28 +19,33 @@ public class MemberService extends MemberRegistry {
     }
 
     public void searchMemberReg(String nameOrId){
+        List<Member> foundM= new ArrayList<>(); // finns bara här inne.
         for(Member m : getMemberRegistryList()){
             if(m.getName().equals(nameOrId)|| m.getId().equals(nameOrId)){
-                System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId());}
-        }
+               foundM.add(m);}}
+            if(foundM.isEmpty()){System.out.println("Hittade tyvärr ingen match.");}
+            else { for(Member member : foundM){
+                System.out.println("Hittade "+member.getName()+" med ID: "+ member.getId());}}
     }
-     public String searchInfo(String string,Scanner scan){
-        System.out.println(string);
-        return scan.nextLine();
-    }
+
+     public void searchInfo(){
+        System.out.println("Vilken medlem letar du efter? Ange Namn eller Personnummer på personen.");
+            }
 
     public String whichMember(Scanner scan){
      return scan.nextLine(); // fungerar ej
     }
 
     public void removeMember(String nameOrId, Scanner scan){
+        List<Member> removeM = new ArrayList<>();
         for(Member m : getMemberRegistryList()){
             if(m.getName().equals(nameOrId)|| m.getId().equals(nameOrId)){
-            System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ "Ska den medlemmen tas bort från listan? JA / NEJ");
+            System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ ". Ska den medlemmen tas bort från listan? JA / NEJ");
             String removeUser = scan.nextLine();
-            if(removeUser.equalsIgnoreCase("ja")){ memberRegistryList.remove(m);System.out.println("Medlem borttagen.");}
-            else {System.out.println("Söker vidare vidare.");}
-        }}}
+            if(removeUser.equalsIgnoreCase("ja")){ removeM.add(m);}}}
+        memberRegistryList.removeAll(removeM);
+                    System.out.println("Medlem borttagen.");
+    }
 
     public void printMemberReg() {
         for (Member m: getMemberRegistryList()){

@@ -3,7 +3,7 @@ package REVENT.service;
 import REVENT.enity.BouncyCastle;
 import REVENT.enity.Item;
 import REVENT.enity.MascotCostume;
-import REVENT.repository.Inventory;
+import REVENT.database.Inventory;
 
 public class RentalService extends Inventory {
     //hanterar uthyrningsmetoder
