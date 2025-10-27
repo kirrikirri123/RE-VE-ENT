@@ -17,7 +17,7 @@ public class MascotCostume extends Item {
     }
     @Override
     public String toString(){
-        return "Produkt: "+ this.name + ","+ this.description + "Säsong: "+ this.season+".\n Hyra - Dag: " + this.dayPrice +". Helg: "+ this.weekendPrice + ". Månad: "+ this.monthlyPrice+".";
+        return "Produkt: "+ this.name + ","+ this.description + ". Säsong: "+ this.season+".\n Hyra - Dag: " + this.dayPrice +". Helg: "+ this.weekendPrice + ". Månad: "+ this.monthlyPrice+".";
     }
 
 }
