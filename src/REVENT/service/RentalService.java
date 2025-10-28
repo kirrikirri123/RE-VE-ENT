@@ -38,11 +38,11 @@ public class RentalService extends Inventory {
     public void searchProd(){
         System.out.println("Vilken produkt?");
     }
-    public List<Item> searchItem(String prod){
+    public List<Item> searchItemByName(String prod){
         List<Item> foundI= new ArrayList<>();
         for(Item i : itemsList){
             if(i.getName().equals(prod)){
-                foundI.add(i);}} return foundI; // returnerar templista där hittat objekt ligger.
+                foundI.add(i);}} return foundI;
     }
 
     public int searchItemGetListIndex(String prod){
@@ -52,22 +52,18 @@ public class RentalService extends Inventory {
                 indexItem = i;}}
            return indexItem; } //Tagit in prodnamn, kollat av listan. Sparat index där prodman har match och returnerar detta.
 
-    public void removeItemfromList(String prod, Scanner scan) {
-        List<Item> removeI = new ArrayList<>();
-        for (Item item : getItemsList()) {
-            if (item.getName().equals(prod)) {
-                System.out.println("Hittade produkten: " + item.getName() + ", " + item.getDescription() + ". Ska produkten tas bort från listan? JA / NEJ");
+    public void removeItemFromList(String prod, Scanner scan) {
+        List<Item> removeI = searchItemByName(prod); //listan som returneras sparas i denna lista.
+        if(removeI.isEmpty()){System.out.println("Hittade ingen match."); return;}
+        for (Item item : removeI){
+                System.out.println("Hittade produkten: " + item.getName() + ", " + item.getDescription() + "." +
+                        " Ska produkten tas bort från listan? JA / NEJ");
                 String removeUser = scan.nextLine();
-                if (removeUser.equalsIgnoreCase("ja")) {
-                    removeI.add(item);
-                }
-            }
-        }
-        if (removeI.isEmpty()){return;}
+                if (removeUser.equalsIgnoreCase("ja")){
         itemsList.removeAll(removeI);
-        System.out.println(" Produkt borttagen.");
+        System.out.println(" Produkt borttagen.");}
         System.out.println(" Se uppdaterad lista:");printItemList();
-    }
+    }}
 
     public void newMascotItem(String name, String description, double day, String season) {
         Item item = new MascotCostume(name, description, day, season);
@@ -79,6 +75,7 @@ public class RentalService extends Inventory {
         addItemToList(item);
     }
     public void printItemList(){
+        if(itemsList.isEmpty()){System.out.println("Inga produkter att visa.");}
         for(Item item:itemsList){
             System.out.println(item);
         }

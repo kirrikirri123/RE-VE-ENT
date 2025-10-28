@@ -10,13 +10,13 @@ public class Main {
         menu.defaultListForTest();
         while (isRunning) {
            menu.startMenuChoice();
-            int userChoice = scan.nextInt(); // felhantering möjlig
+            String userChoice = scan.next(); // felhantering möjlig
             switch (userChoice) {
-                case 1: menu.memberMenu(scan); break;
-                case 2: menu.productMenu(scan); break;
-                case 3: menu.rentalMenu(scan); break;
-                case 4: menu.economyMenu(); break;
-                case 5:System.out.println("Avsluta programmet"); isRunning = false; break;
+                case "1": menu.memberMenu(scan); break;
+                case "2": menu.productMenu(scan); break;
+                case "3": menu.rentalMenu(scan); break;
+                case "4": menu.economyMenu(); break;
+                case "5":System.out.println("Avsluta programmet"); isRunning = false; break;
                 default: System.out.println("Något blev fel. Försök igen. Välj mellan [1] till [5]");
             }
         }// utanför loop..

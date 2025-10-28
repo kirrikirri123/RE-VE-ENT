@@ -3,13 +3,14 @@ package REVENT.database;
 import REVENT.enity.Member;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class MemberRegistry {
-protected HashSet<Member> memberRegistryList = new HashSet<>();
+protected Set<Member> memberRegistryList = new HashSet<>();
 
 public MemberRegistry(){}
 
-    public HashSet<Member> getMemberRegistryList() {
+    public Set<Member> getMemberRegistryList() {
         return memberRegistryList;
     }
 

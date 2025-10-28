@@ -19,5 +19,5 @@ public class BouncyCastle extends Item {
     }
     @Override
     public String toString(){
-    return "Produktnamn: "+ this.name + "."+ this.description + ".";
+    return "Produkt: "+ this.name + "."+ this.description + ".";
 }}

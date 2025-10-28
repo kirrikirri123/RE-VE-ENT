@@ -12,18 +12,20 @@ import java.util.Scanner;
 
 public class Menu {
 
-    MemberService memberService = new MemberService(); //Det enda objektet vi vill ha av denna klass.
-    RentalService rentalService = new RentalService();//Det enda objektet vi vill ha av denna klass.
+    MemberService memberService = new MemberService();
+    RentalService rentalService = new RentalService();
     Rental rental = new Rental();
 
     public void startMenuChoice() {
-        System.out.println("RevENTs uthyrning");
-        System.out.println("[1] Medlemmar: Skapa ny medlem, gör förändringar i medlemslista." +
-                "\n[2] Produkter: Lägg till eller ta bort produkter. " +
-                "\n[3] Uthyrning : Ny uthyrning." +
-                "\n[4] Ekomoni : Intäkter." +
-                "\n[5] Avsluta");
-        System.out.println("Skriv siffra sedan enter.");
+        System.out.println(
+        """
+         RevENTs uthyrning
+        [1] Medlemmar : Skapa ny medlem, gör förändringar i medlemslista.
+        [2] Produkter : Se produkter, gör förändringar i produktlista.
+        [3] Uthyrning : Ny uthyrning.
+        [4] Ekomoni : Intäkter.
+        [5] Avsluta"
+        Skriv siffra sedan enter.""");
     }
 
     public void defaultListForTest() {
@@ -33,26 +35,26 @@ public class Menu {
 
     public void productMenu(Scanner scan) {
         System.out.println("Produkter");
-        System.out.println(" Gör ett val: \n[1] Visa alla produkter. [2] Visa dräkter. [3] Visa hoppborgar.[4] Sök och ta bort produkt. [H] Huvudmeny");
+        System.out.println(" Gör ett val: \n[V] Visa alla produkter. [D] Dräkter. [H] Hoppborgar.[S] Sök och ta bort produkt. [B] Backa till Huvudmeny");
         String itemSort = scan.next();
         switch (itemSort) {
-            case "1" : rentalService.printItemList(); break;
-            case "2" : for(Item it : rentalService.getItemsList()) {
+            case "V" : rentalService.printItemList(); break;
+            case "D" : for(Item it : rentalService.getItemsList()) {
                  if (it.toString().contains("Säsong")) {
                     System.out.println(it);}} break;
-            case "3" : for(Item it : rentalService.getItemsList()) {
+            case "H" : for(Item it : rentalService.getItemsList()) {
                 if (it.toString().contains("inomhusbruk")) {
                     System.out.println(it);}} break;
-            case "4" : scan.nextLine();
+            case "S" : scan.nextLine();
             rentalService.searchProd();
             String userSearchProd = scan.nextLine();
-            rentalService.removeItemfromList(userSearchProd, scan);
+            rentalService.removeItemFromList(userSearchProd,scan);
             scan.nextLine();break;
             case "5" :
-            case "h" :
-            case "H" : System.out.println("Åter huvudmeny");break;
+            case "b" :
+            case "B" : System.out.println("Backar");break;
             default:
-                System.out.println("Något blev fel. 1 = Alla produkter, 2 = Dräkter, 3 = Hoppborgar, 4 = Sök/ ta bort produkt, H = Huvudmeny.");
+                System.out.println("Något blev fel. V = Alla produkter, D = Dräkter, H= Hoppborgar, S = Sök/ ta bort produkt, B = Bakåt till Huvudmeny.");
                 scan.nextLine();
                 break;
         }
@@ -60,7 +62,7 @@ public class Menu {
 
     public void memberMenu(Scanner scan) {
 
-        System.out.println("Medlemmar\n Välj åtgärd: [N] Ny medlem, [S] Sök medlem, [U] Uppdatera / ta bort befintlig medlem.[H] Huvudmeny");
+        System.out.println("Medlemmar\n Välj åtgärd: [N] Ny medlem, [S] Sök medlem, [U] Uppdatera / ta bort befintlig medlem. [H] Historik - medlemsspecifik. [B] Backa till Huvudmeny");
         String memberActionChoice = scan.next();
         switch (memberActionChoice) {
             case "n":
@@ -78,7 +80,7 @@ public class Menu {
                 scan.nextLine(); //städare
                 memberService.searchInfo();
                 String userSearch = scan.nextLine();
-                memberService.searchMemberWhitoutTempList(userSearch);
+                memberService.printSearchMemberReg(userSearch);
                 scan.nextLine();
                 break;
             case "u":
@@ -92,50 +94,57 @@ public class Menu {
                     String userRemove = scan.nextLine();
                     memberService.removeMember(userRemove, scan);
                 } else if (userChangeMem.equalsIgnoreCase("U")) {
-                    System.out.println("Under uppbyggnad.");
-                }
-                scan.nextLine();
+                    memberService.searchInfo();
+                    String userUpdate = scan.nextLine();
+                    memberService.updateMember(userUpdate,scan);
+                    }
                 break;
-            case "4": System.out.println("Medlemshistorik");
+            case "H": System.out.println("Medlemshistorik");
                scan.nextLine(); //städare
                         memberService.searchInfo();
                 String userHistory = scan.nextLine();
-                memberService.searchMemberReg(userHistory);
-                memberService.getMemberHistory(memberService.searchMemberReg(userHistory).getFirst());
+                memberService.searchMemberByNameId(userHistory);
+                //memberService.getMemberHistory(memberService.searchMemberReg(userHistory));
                         break;
-            case "h":
-            case "H":
-                System.out.println("Åter huvudmeny");break;
+            case "b":
+            case "B":
+                System.out.println("Backar");break;
             case "a":
             case "A":
-                 memberService.printMemberReg();
+               memberService.printMemberReg();
                  break;
             default:
-                System.out.println("Något blev fel. N = Ny medlem. S = Söka medlem. U = Uppdatera medlem. H = Huvudmeny.");
+                System.out.println("Något blev fel. N = Ny medlem. S = Söka medlem. U = Uppdatera medlem. H = Historik. B =  Bakåt till huvudmeny.");
                 scan.nextLine();
                 break;
         }
     }
 
-
     public void rentalMenu(Scanner scan) {
         System.out.println("Uthyrning");
-        System.out.println("[1] Ny uthyrning.[2] Avsluta uthyrning. [3] Uthyrningshistorik. [H] Huvudmeny");
+        System.out.println("[N] Ny uthyrning.[A] Avsluta uthyrning. [H] Historik - uthyrningar . [B] Backa till huvudmeny");
         scan.nextLine(); //städare
         String userRentalChoice = scan.nextLine();
         switch (userRentalChoice){
-            case "1" : System.out.println("Ny uthyrning.");
+            case "N" : System.out.println("Ny uthyrning.");
             System.out.println("Vilken kund?\n Om det är en helt ny kund,gå åter till Huvudmenyn och välj Medlemmar på nr.1");
             String userMemberInput = scan.nextLine();
+            memberService.searchMemberByNameId(userMemberInput);
 
-            //rental.newRental(,); // träna hur man hittar index eller pinpointar ett värde i en lista!
+
+
+            //rental.newRental(,);
             break;
-            case "2" : System.out.println("Avsluta uthyrning"); break;
-            case "3" : System.out.println("Uthyrningshistorik");
+            case "A" : System.out.println("Avsluta uthyrning"); break;
+            case "H" : System.out.println("Uthyrningshistorik");
             rental.printRentalsList();
             break;
-            case "4" :
-            case "H" : System.out.println("Åter till huvudmeny");break;
+            case "?" :
+            case "B" : System.out.println("Backar");break;
+            default:
+                System.out.println("Något blev fel. N = Ny utyrning. A = Avsluta uthyrning. H = Historik. B = Bakåt till huvudmeny.");
+                scan.nextLine();
+                break;
         }
     }
 
@@ -145,16 +154,3 @@ public class Menu {
     }
 }
 
-//Konceptet funkar men de blir inge bra.
-           /* memberService.searchMemberReg(userMemberInput); //returnerar templista där hittad medlem finns.
-            rentalService.searchProd();
-            String userProdRental = scan.nextLine();
-            rentalService.searchItem(userProdRental); // returnerar templista där produkten är hittad.
-
-         //   System.out.println("Granska bokning: "+ rentalService.searchItem(userProdRental).getFirst().getName() + " uthyres till "+ memberService.searchMemberReg(userMemberInput).getFirst().getName() +".");
-            System.out.println("Bekräfta med J för att boka.");
-            String validateMember = scan.next();
-             if(validateMember.equalsIgnoreCase("J")) {
-       //          rental.rentalsToList(rentalService.searchItem(userProdRental).getFirst(), memberService.searchMemberReg(userMemberInput).getFirst());
-              }else{System.out.println("Ångrat dig? Inget har bokat. Påbörja din bokning igen.");}
-*/

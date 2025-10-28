@@ -1,29 +1,16 @@
 package REVENT.pricepolicy;
 
 public class PrivateInduvidual implements PricePolicy{
-    // ska denna finnas?? ÄR detta verkligen ett är-en-arv? Väl avgränsat?
-    @Override
-    public void priceVAT() {
 
+
+    @Override
+    public void priceVAT() { //*1,25
+//riktigtpris * denna metod = betalningen som ska in.
     }
 
     @Override
-    public void discount() {
-
+    public void discount() { //*0,8
+    //totaltpris * denna metod = riktigt pris.
     }
 
-    @Override
-    public void priceDay() {
-
-    }
-
-    @Override
-    public void priceWeekend() {
-
-    }
-
-    @Override
-    public void priceMonth() {
-
-    }
 }
