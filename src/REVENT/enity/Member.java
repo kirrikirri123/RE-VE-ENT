@@ -8,7 +8,7 @@ import java.util.List;
 public class Member {
     private String id;
     private String name;
-    private String memberStatus;
+    private String memberStatus; //private eller society
     private List<Rental> historyMember = new LinkedList<>();
 
     public Member (){}
@@ -41,10 +41,10 @@ public class Member {
         return historyMember;
     }
     public void setHistoryMember(List<Rental> historyMember) {
-        this.historyMember = historyMember;
+        this.historyMember = historyMember; // Denna går väll inte använda??
         }
 @Override
     public String toString() {
-       return "Id-nummer:"+ this.id + "\n Namn:"+ this.name + "\n Privat / Förening: " + this.memberStatus;
+       return "Id-nummer:"+ this.id + "\n Namn:"+ this.name +".";
 }
 }

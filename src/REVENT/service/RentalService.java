@@ -14,7 +14,7 @@ public class RentalService extends Inventory {
     //hanterar uthyrningsmetoder
 
 
-    public void bookRental(String userRentalChoice) {
+   /* public void bookRental(String userRentalChoice) {
         if (userRentalChoice.equalsIgnoreCase("boka")) {
         } //Val hur länge man vill boka. Sätta datum. Kunden får skriva in datum för start och stop. Vi beräknar från det hur många dagar?
         // eller ska man ha fasta förslag på  dag,  helg (3 dagar)  Måndag (lägg in variabel på vilken månad.)
@@ -24,23 +24,34 @@ public class RentalService extends Inventory {
             stopRental("avsluta");
         }
     }
-
     public void stopRental(String userRentalChoice) {
         if (userRentalChoice.equalsIgnoreCase("avsluta")) {
             // vad ska  göras? om någon blir galet eller om kunden vill avsluta i förtid?
         } else if (userRentalChoice.equalsIgnoreCase("boka")) {
             bookRental("boka");
         }
-    }
+    }*/
 
     public void addItemToList(Item item) {
         getItemsList().add(item);
     }
     public void searchProd(){
-        System.out.println("Ange fullständigt namn på produkten du söker:");
+        System.out.println("Vilken produkt?");
+    }
+    public List<Item> searchItem(String prod){
+        List<Item> foundI= new ArrayList<>();
+        for(Item i : itemsList){
+            if(i.getName().equals(prod)){
+                foundI.add(i);}} return foundI; // returnerar templista där hittat objekt ligger.
     }
 
-// skulle man kunna separera nedan metod i en sökning och en  remove där i sökmetoden retuneras ett objekt som man läggas i tempLIstan?
+    public int searchItemGetListIndex(String prod){
+        int indexItem=0;
+        for(int i = 0; i < itemsList.size();i++){
+            if(itemsList.get(i).getName().equals(prod)){
+                indexItem = i;}}
+           return indexItem; } //Tagit in prodnamn, kollat av listan. Sparat index där prodman har match och returnerar detta.
+
     public void removeItemfromList(String prod, Scanner scan) {
         List<Item> removeI = new ArrayList<>();
         for (Item item : getItemsList()) {
@@ -58,14 +69,13 @@ public class RentalService extends Inventory {
         System.out.println(" Se uppdaterad lista:");printItemList();
     }
 
-
-    public void newMascotItem(String name, String description, double day, double weekend, double month, String season) {
-        Item item = new MascotCostume(name, description, day, weekend, month, season);
+    public void newMascotItem(String name, String description, double day, String season) {
+        Item item = new MascotCostume(name, description, day, season);
         addItemToList(item);
     }
 
-    public void newBouncyItem(String name, String description, double day, double weekend, double month, boolean indoor) {
-        Item item = new BouncyCastle(name, description, day, weekend, month, indoor);
+    public void newBouncyItem(String name, String description, double day, boolean indoor) {
+        Item item = new BouncyCastle(name, description, day, indoor);
         addItemToList(item);
     }
     public void printItemList(){
@@ -74,11 +84,10 @@ public class RentalService extends Inventory {
         }
     }
 
-
     public void defaultList() { // För testning.
-        newBouncyItem("Kungliga slottet","Stor hoppborg,för 15 barn",1000,2500,15000, false);
-        newBouncyItem("Slott"," Liten hoppborg,för max 7 barn",450,1200,8500, false);
-        newMascotItem("Nallebjörn","Kramgo, lurvig brunbjörn", 200,500,2000,"Året om");
-        newMascotItem("Tomten","Premium tomtedräkt. Kvalitetskläder naturligt skägg. Inga skor medföljer.", 1000,1800,6000,"Jul");
+        newBouncyItem("Kungliga slottet","Stor hoppborg,för 15 barn",1000, false);
+        newBouncyItem("Slott"," Liten hoppborg,för max 7 barn",450, false);
+        newMascotItem("Nallebjörn","Kramgo, lurvig brunbjörn", 200,"Året om");
+        newMascotItem("Tomten","Premium tomtedräkt. Kvalitetskläder naturligt skägg. Inga skor medföljer.", 1000,"Jul");
     }
 }

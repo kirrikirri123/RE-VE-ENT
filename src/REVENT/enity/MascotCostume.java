@@ -5,8 +5,8 @@ public class MascotCostume extends Item {
 
 
     public MascotCostume(){}
-    public MascotCostume(String name,String description,double day,double weekend, double month,String season){
-        super(name, description, day, weekend, month);
+    public MascotCostume(String name,String description,double day,String season){
+        super(name, description, day);
         this.season = season;}
 
      public String getSeason(){
@@ -17,7 +17,7 @@ public class MascotCostume extends Item {
     }
     @Override
     public String toString(){
-        return "Produkt: "+ this.name + ","+ this.description + ". Säsong: "+ this.season+".\n Hyra - Dag: " + this.dayPrice +". Helg: "+ this.weekendPrice + ". Månad: "+ this.monthlyPrice+".";
+        return "Produkt: "+ this.name + ","+ this.description + ".";
     }
 
 }
