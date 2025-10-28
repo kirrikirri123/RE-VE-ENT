@@ -5,9 +5,8 @@ public class BouncyCastle extends Item {
 
 
     public BouncyCastle(){}
-    public BouncyCastle(String name,String description,double day,double weekend, double month,boolean indoorUse){
-        super(name, description, day, weekend, month);
-
+    public BouncyCastle(String name,String description,double day,boolean indoorUse){
+        super(name, description, day);
         this.indoorUse = indoorUse;
     }
 
@@ -20,5 +19,5 @@ public class BouncyCastle extends Item {
     }
     @Override
     public String toString(){
-    return "Produktnamn: "+ this.name + "."+ this.description + ". Godkänd för inomhusbruk: "+ this.indoorUse + ".\n Hyra - Dag: " + this.dayPrice +". Helg: "+ this.weekendPrice + ". Månad: "+ this.monthlyPrice+".";
+    return "Produktnamn: "+ this.name + "."+ this.description + ".";
 }}

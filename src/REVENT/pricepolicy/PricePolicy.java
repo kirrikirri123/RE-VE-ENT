@@ -1,4 +1,4 @@
-package REVENT;
+package REVENT.pricepolicy;
 
 public interface PricePolicy {
     //Ska implementeras i två klasser.
