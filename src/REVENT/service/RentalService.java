@@ -4,6 +4,7 @@ import REVENT.enity.BouncyCastle;
 import REVENT.enity.Item;
 import REVENT.enity.MascotCostume;
 import REVENT.database.Inventory;
+import REVENT.enity.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,51 +13,64 @@ import java.util.Scanner;
 public class RentalService extends Inventory {
     //hanterar Item-funktioner kopplade till uthyrning.
 
+    /* public void bookRental(String userRentalChoice) {
+         if (userRentalChoice.equalsIgnoreCase("boka")) {
+         } //Val hur länge man vill boka. Sätta datum. Kunden får skriva in datum för start och stop. Vi beräknar från det hur många dagar?
+         // eller ska man ha fasta förslag på  dag,  helg (3 dagar)  Måndag (lägg in variabel på vilken månad.)
 
-   /* public void bookRental(String userRentalChoice) {
-        if (userRentalChoice.equalsIgnoreCase("boka")) {
-        } //Val hur länge man vill boka. Sätta datum. Kunden får skriva in datum för start och stop. Vi beräknar från det hur många dagar?
-        // eller ska man ha fasta förslag på  dag,  helg (3 dagar)  Måndag (lägg in variabel på vilken månad.)
-
-
-        else if (userRentalChoice.equalsIgnoreCase("avsluta")) {
-            stopRental("avsluta");
-        }
-    }
-    public void stopRental(String userRentalChoice) {
-        if (userRentalChoice.equalsIgnoreCase("avsluta")) {
-            // vad ska  göras? om någon blir galet eller om kunden vill avsluta i förtid?
-        } else if (userRentalChoice.equalsIgnoreCase("boka")) {
-            bookRental("boka");
-        }
-    }*/
+         else if (userRentalChoice.equalsIgnoreCase("avsluta")) {
+             stopRental("avsluta");
+         }
+     }
+     public void stopRental(String userRentalChoice) {
+         if (userRentalChoice.equalsIgnoreCase("avsluta")) {
+             // vad ska  göras? om någon blir galet eller om kunden vill avsluta i förtid?
+         } else if (userRentalChoice.equalsIgnoreCase("boka")) {
+             bookRental("boka");
+         }
+     }*/
     public void addItemToList(Item item) {
         getItemsList().add(item);
     }
-    public void searchProd(){
+
+    public void searchProd() {
         System.out.println("Vilken produkt?");
     }
-    public List<Item> searchItemByName(String prod){
-        List<Item> foundI= new ArrayList<>();
-        for(Item i : itemsList){
-            if(i.getName().equalsIgnoreCase(prod)){
-                foundI.add(i);}} return foundI;
+    public List<Item> searchItemByName(String prod) {
+        List<Item> foundI = new ArrayList<>();
+        for (Item i : itemsList) {
+            if (i.getName().equalsIgnoreCase(prod)) {
+                foundI.add(i);} }
+        return foundI;
     }
-public void checkListSum(String prod){
-        List<Item> foundMatches = searchItemByName(prod);
-        if(foundMatches.size()>= 2){
-            System.out.println("Hittade flera matchningar. Vilken är korrekt?");
-            for(int i =0 ; i<foundMatches.size(); i++){
-                System.out.println("Nr."+ i + foundMatches.get(i).getName());}
+    public Item searchItemByNameReturnItem(String prod) {
+        Item foundItem = null;
+        for (Item it : itemsList) {
+            if (it.getName().equalsIgnoreCase(prod)) {
+                foundItem = it;
+            }
         }
-}
+        return foundItem;}
+
+public void checkListPrintItemsFound(String prod) { // onödigt krånglig då Itemslist är en ArrayList?
+    List<Item> foundMatches = searchItemByName(prod);
+    if (foundMatches.size() >= 2) {
+        System.out.println("Hittade flera matchningar.");
+        for (int i = 0; i < foundMatches.size(); i++) {
+            System.out.println("Nr." + i + foundMatches.get(i).getName());}
+    } else if (foundMatches.isEmpty()) {
+        System.out.println("Hittade ingen matchning.");
+    } else {
+        for (Item item : foundMatches) {
+            System.out.println("Hittade " + item.getName() + " med dagspris: " + item.getDayPrice());
+        }}}
 
     public int searchItemGetListIndex(String prod){
         int indexItem=0;
         for(int i = 0; i < itemsList.size();i++){
             if(itemsList.get(i).getName().equalsIgnoreCase(prod)){
                 indexItem = i;}}
-           return indexItem; } //Tagit in prodnamn, kollat av listan. Sparat index där prodman har match och returnerar detta.
+           return indexItem; } //Tagit in prodnamn, kollat av listan. Sparat index där prodnamn har match och returnerar detta.
 
     public void removeItemFromList(String prod, Scanner scan) {
         List<Item> removeI = searchItemByName(prod); //listan som returneras sparas i denna lista.
@@ -80,6 +94,7 @@ public void checkListSum(String prod){
         Item item = new BouncyCastle(name, description, day, indoor);
         addItemToList(item);
     }
+
     public void printItemList(){
         if(itemsList.isEmpty()){System.out.println("Inga produkter att visa.");}
         for(Item item:itemsList){

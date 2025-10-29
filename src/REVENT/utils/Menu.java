@@ -2,13 +2,13 @@ package REVENT.utils;
 
 import REVENT.Rental;
 import REVENT.enity.Item;
+import REVENT.enity.Member;
 import REVENT.service.MemberService;
 import REVENT.service.RentalService;
 
 import java.util.Scanner;
 
 public class Menu {
-
     MemberService memberService = new MemberService();
     RentalService rentalService = new RentalService();
     Rental rental = new Rental();
@@ -24,7 +24,6 @@ public class Menu {
         [5] Avsluta.
         Skriv siffra sedan enter.""");
     }
-
     public void defaultListForTest() {
         memberService.defaultList();// default medlemmar för att det ska finnas nånting att testa med.
         rentalService.defaultList();//default produkter för att det ska finnas nånting att testa med.
@@ -81,7 +80,7 @@ public class Menu {
                 scan.nextLine(); //städare
                 memberService.searchInfo();
                 String userSearch = scan.nextLine();
-                memberService.printSearchMemberReg(userSearch);
+                memberService.checkListPrintMembersFound(userSearch);
                 scan.nextLine();
                 break;
             case "U":
@@ -96,15 +95,14 @@ public class Menu {
                 } else if (userChangeMem.equalsIgnoreCase("U")) {
                     memberService.searchInfo();
                     String userUpdate = scan.nextLine();
-                    memberService.updateMember(userUpdate,scan);
+                    memberService.findAndUpdateMember(userUpdate,scan);
                     }
                 break;
             case "H": System.out.println("Medlemshistorik");
                scan.nextLine(); //städare
                         memberService.searchInfo();
                 String userHistory = scan.nextLine();
-                memberService.searchMemberByNameId(userHistory);
-                //memberService.getMemberHistory(memberService.searchMemberReg(userHistory));
+                 memberService.getMemberHistory(memberService.searchMemberByNameOrIdReturnMember(userHistory));
                         break;
             case "B":
                 System.out.println("Backar");break;
@@ -128,19 +126,19 @@ public class Menu {
             case "N" : System.out.println("Ny uthyrning.");
             System.out.println("Vilken kund?\n Om det är en helt ny kund,gå åter till Huvudmenyn och välj Medlemmar på nr.1");
             String userMemberInput = scan.nextLine();
-            memberService.searchMemberByNameId(userMemberInput); //returnerar templista där hittad medlem finns. borde tas in i annan metod..
+                Member choosenRentMember =  memberService.searchMemberByNameOrIdReturnMember(userMemberInput);
                 rentalService.searchProd();
                 String userProdRental = scan.nextLine();
-                rentalService.searchItemByName(userProdRental); // returnerar templista där produkten är hittad.
+                rentalService.searchItemByName(userProdRental);// returnerar templista där produkten är hittad.
+                int indexOfProd = rentalService.searchItemGetListIndex(userProdRental);
                 int rentDayInput = rental.rentDaysChoice(scan);
-                System.out.println("Granska bokning: "+ rentalService.searchItemByName(userProdRental).getFirst().getName() + " uthyres till "+ memberService.searchMemberByNameId(userMemberInput).getFirst().getName() +" i "+ rentDayInput + " dagar.");
+                System.out.println("Granska bokning: "+ rentalService.searchItemByName(userProdRental).getFirst().getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar.");
+
                 System.out.println("Bekräfta med J för att boka. Annars X.");
                 String validateChoice = scan.next();
                 if(validateChoice.equalsIgnoreCase("J")) {
-
-                    System.out.println("Simulering av att skapa nytt rentalobjekt");
-                    // rental.newRental(,);
-                    // rental.rentalsToList(rentalService.searchItemByName(userProdRental).getFirst(), memberService.searchMemberByNameId(userMemberInput).getFirst());
+                Rental newRentalItem = rental.newRental(rentalService.getItemsList().get(indexOfProd),rentDayInput);
+                rental.rentalsToList(newRentalItem, choosenRentMember);
                 }else{System.out.println("Ångrat dig? Inget har bokat. Påbörja din bokning igen.");}
             waitForEnter(scan);
 
