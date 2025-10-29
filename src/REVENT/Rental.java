@@ -4,10 +4,8 @@ import REVENT.database.RentalRegistry;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
 
-import java.util.HashMap;
-
 public class Rental extends RentalRegistry {
-    // ska hålla koll på hyrestiden och koppla ihop item och member.
+    // ska hålla koll på hyrestiden och koppla ihop item och member. OCh priser
     private Item rentalItem;
     private int rentDays;
 
@@ -16,20 +14,23 @@ public class Rental extends RentalRegistry {
 
     public Rental(Item rentalItem, int rentDays) {
         this.rentalItem = rentalItem;
-        this.rentDays = 1; // Lägg metod som tar in valda tiden från objektet?
+        this.rentDays = rentDays; // Lägg metod som tar in valda tiden från objektet?
     }
-
+    public int getRentDays(){
+        return rentDays;
+    }
     public void setRentDays(int rentDays) {
         this.rentDays = rentDays;
     }
     public void setRentalItem(Item rentalItem) {
         this.rentalItem = rentalItem;}
-
+//_____________________________________________________________________________________
 
     public Rental newRental(Item rentalItem, int rentDays){ // Varför ha denna nr man har konstruktor?
         Rental rental = new Rental(rentalItem,rentDays);
         return rental;
     }
+
     public void rentalsToList(Rental rentalItem, Member member) {
         RentalList.put(rentalItem, member); // Kopplar rental och member mål- item + dagar kopplas med member
         addHistory(rentalItem,member); // borde ju då bli samma item och member och inte dubblera sig.
@@ -47,40 +48,34 @@ public class Rental extends RentalRegistry {
     public void printRentalsList() {
         for (int i = 0; i < RentalList.size(); i++) {
             System.out.println(i);
-        }
-
-/*
-    public int rentalTime(String rentTime) {
-        //if (rentTime.isEmpty()) throw Exeption av nått slag.
-        return 1;
+        }}
+//___________________________________________________________________________
+    //Priceing
+public double priceDay(double dayPrice,int days) {
+    //priset i item gånger days från renalitem = totaltpris.
+    if(30>= days){ int month =0;
+        for(int i=0,j=30;i< days;i++,j++){
+            if(j==30||j==60||j==90||j==120||j==150|| j==180){
+                month++;}}
+        priceMonth(dayPrice,month);
     }
-public void connectTime() {
-    // ta emot ett item och en medlem (Nytt objekt skapas för hyrandet? Varje Item för hyra blir unikt till den member? eller ska man jobba med saldo?)
-    //Greja med tid
-    //Lägg till item och tid i history.
+    return dayPrice * days;
 
+}
+ public double priceMonth(double dayPrice,int months) {
+     return (months*30)*dayPrice / 2; // om de ksa bli uskrift av denna kör printf(%.f2)
 
-    public int rentMonthly() {
-        //discount february?
+ }
+    public int discountFebruary() {
         int feb = 0;
         for (int i = 0; i <= 12; i++) {
             if (i == 2) {
-                feb -= 2;
-            }
-        }
-        return feb;
-    }
-
-
-*/
-
-    }
-
+                feb -= 2; }
+        }        return feb;}
 
 public void defaultRentalList(){//för testning
-      //RentalList.put(,);
+      //RentalList.put(); // in med rentalItem (item + rentDay) och member
     }
-
 }
-    //metod. Ska rental vara ett hyrestidsobjekt som består av värdet av objekt item och objekt  member tillsammans med en tids vaiabel?
+
 
