@@ -4,14 +4,13 @@ import REVENT.enity.BouncyCastle;
 import REVENT.enity.Item;
 import REVENT.enity.MascotCostume;
 import REVENT.database.Inventory;
-import REVENT.enity.Member;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class RentalService extends Inventory {
-    //hanterar uthyrningsmetoder
+    //hanterar Item-funktioner kopplade till uthyrning.
 
 
    /* public void bookRental(String userRentalChoice) {
@@ -31,7 +30,6 @@ public class RentalService extends Inventory {
             bookRental("boka");
         }
     }*/
-
     public void addItemToList(Item item) {
         getItemsList().add(item);
     }
@@ -41,14 +39,22 @@ public class RentalService extends Inventory {
     public List<Item> searchItemByName(String prod){
         List<Item> foundI= new ArrayList<>();
         for(Item i : itemsList){
-            if(i.getName().equals(prod)){
+            if(i.getName().equalsIgnoreCase(prod)){
                 foundI.add(i);}} return foundI;
     }
+public void checkListSum(String prod){
+        List<Item> foundMatches = searchItemByName(prod);
+        if(foundMatches.size()>= 2){
+            System.out.println("Hittade flera matchningar. Vilken är korrekt?");
+            for(int i =0 ; i<foundMatches.size(); i++){
+                System.out.println("Nr."+ i + foundMatches.get(i).getName());}
+        }
+}
 
     public int searchItemGetListIndex(String prod){
         int indexItem=0;
         for(int i = 0; i < itemsList.size();i++){
-            if(itemsList.get(i).getName().equals(prod)){
+            if(itemsList.get(i).getName().equalsIgnoreCase(prod)){
                 indexItem = i;}}
            return indexItem; } //Tagit in prodnamn, kollat av listan. Sparat index där prodman har match och returnerar detta.
 
@@ -83,7 +89,8 @@ public class RentalService extends Inventory {
 
     public void defaultList() { // För testning.
         newBouncyItem("Kungliga slottet","Stor hoppborg,för 15 barn",1000, false);
-        newBouncyItem("Slott"," Liten hoppborg,för max 7 barn",450, false);
+        newBouncyItem("Slott"," Liten hoppborg,för max 7 barn",450, true);
+        newBouncyItem("UltimateExtreme"," Maxad hoppupplevelse,för max 8 vuxna",3500, false);
         newMascotItem("Nallebjörn","Kramgo, lurvig brunbjörn", 200,"Året om");
         newMascotItem("Tomten","Premium tomtedräkt. Kvalitetskläder naturligt skägg. Inga skor medföljer.", 1000,"Jul");
     }

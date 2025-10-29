@@ -6,8 +6,9 @@ import REVENT.database.MemberRegistry;
 import java.util.*;
 
 public class MemberService extends MemberRegistry {
+// Hanterar memberfunktioner.
 
-    public void newMemberIndividual(String id, String name, String memberStatus){
+    public void newMember(String id, String name, String memberStatus){
         Member member = new Member(id,name,memberStatus);
         addMemberList(member); }
 
@@ -21,8 +22,7 @@ public class MemberService extends MemberRegistry {
         List<Member> foundM= new ArrayList<>();
                 for(Member m : memberRegistryList){
             if(m.getName().equalsIgnoreCase(nameOrId)|| m.getId().equals(nameOrId)){
-                foundM.add(m);}}
-        return foundM;
+                foundM.add(m);}}return foundM;
     }
         public void printSearchMemberReg(String nameOrId){
           List<Member> foundMatches = searchMemberByNameId(nameOrId);
@@ -56,24 +56,25 @@ public class MemberService extends MemberRegistry {
         List<Member> foundMatches =searchMemberByNameId(nameOrId);
         if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning."); return;}
         for(Member m : foundMatches)
-        {System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ ". Ska "+ m.getName()+ ".\n Om felaktigt ange X!");}
+        {System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ ". Ska "+ m.getName()+ "s profil uppdateras?\n Om felaktigt ange X!");}
         System.out.println("Vad vill du uppdatera? \n[N] Namn. [M] Medlemsstatus");
         String userChoiceChange = scan.next();
-        if(userChoiceChange.equalsIgnoreCase("N")){System.out.println("Skriv in den nya namnet:");
-            String memberFname = scan.next() + " "; String memberLname = scan.next();}
-        else if (userChoiceChange.equalsIgnoreCase("M")){
+        if(userChoiceChange.equalsIgnoreCase("N")) {
+            System.out.println("Skriv in den nya namnet:");
+            String memberFname = scan.next() + " ";
+            String memberLname = scan.next(); // Lägg in metod som hanterar förändringen !
+        }else if (userChoiceChange.equalsIgnoreCase("M")){ // Lägg in metod som hanterar förändringen !
             System.out.println( "Om privatperson ange P. Om förening ange F.");
             String memberStatus = scan.next();
         }else {System.out.println("Backar till huvudmeny");}
 
-        // förändra vad? Uppdatera namn eller id.
     }
 
 
     public void defaultList() { // För testning.
-        newMemberIndividual("920618", "Kickan Karlsson","Privat");
-        newMemberIndividual("690524","Bengan Bertholdsson","Privat");
-        newMemberIndividual("123456", "Ersboda Pingisföreningsklubb","Förening");
+        newMember("920618", "Kickan Karlsson","Privat");
+        newMember("690524","Bengan Bertholdsson","Privat");
+        newMember("123456", "Ersboda Pingisföreningsklubb","Förening");
     }
 
 }

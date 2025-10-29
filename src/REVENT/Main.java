@@ -20,9 +20,7 @@ public class Main {
                 default: System.out.println("Något blev fel. Försök igen. Välj mellan [1] till [5]");
             }
         }// utanför loop..
-
-
-           } // utanför programmet..
+                   } // utanför programmet..
 
     }
 
