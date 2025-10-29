@@ -129,10 +129,10 @@ public class Menu {
                 Member choosenRentMember =  memberService.searchMemberByNameOrIdReturnMember(userMemberInput);
                 rentalService.searchProd();
                 String userProdRental = scan.nextLine();
-                rentalService.searchItemByName(userProdRental);// returnerar templista där produkten är hittad.
+                Item choosenRentItem= rentalService.searchItemByNameReturnItem(userProdRental);
                 int indexOfProd = rentalService.searchItemGetListIndex(userProdRental);
                 int rentDayInput = rental.rentDaysChoice(scan);
-                System.out.println("Granska bokning: "+ rentalService.searchItemByName(userProdRental).getFirst().getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar.");
+                System.out.println("Granska bokning: "+ choosenRentItem.getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar.");
 
                 System.out.println("Bekräfta med J för att boka. Annars X.");
                 String validateChoice = scan.next();
@@ -141,7 +141,6 @@ public class Menu {
                 rental.rentalsToList(newRentalItem, choosenRentMember);
                 }else{System.out.println("Ångrat dig? Inget har bokat. Påbörja din bokning igen.");}
             waitForEnter(scan);
-
             break;
             case "A" : System.out.println("Avsluta uthyrning"); break;
             case "H" : System.out.println("Uthyrningshistorik");

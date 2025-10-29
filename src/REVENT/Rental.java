@@ -84,8 +84,11 @@ public void defaultRentalList(){//för testning
     //rentalsToList(newRental(Item,7),Member);
          }
 
+    @Override
+    public String toString() {
+        return "Uthyrd: " + this.rentalItem.getName() + " Planerad hyrestid i dagar: " + this.rentDays+" .";
 
-
+    }
 }
 
 

@@ -1,5 +1,6 @@
 package REVENT.service;
 
+import REVENT.Rental;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
 import REVENT.database.MemberRegistry;
@@ -58,8 +59,11 @@ public class MemberService extends MemberRegistry {
     }}}
 
     public void getMemberHistory(Member member){
-       System.out.println(member.getHistoryMember()); // måste man göra en loop?
-    }
+        if(member.getHistoryMember().isEmpty()){System.out.println("Finns ingen historik på vald medlem.");}
+        else { for (Rental r : member.getHistoryMember() ){
+       System.out.println(r); }
+        }}
+
     public void printMemberReg() {
         if (memberRegistryList.isEmpty()){System.out.println("Listan är tom.");}
         for (Member m: memberRegistryList){
