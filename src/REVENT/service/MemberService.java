@@ -1,5 +1,6 @@
 package REVENT.service;
 
+import REVENT.enity.Item;
 import REVENT.enity.Member;
 import REVENT.database.MemberRegistry;
 
@@ -18,21 +19,35 @@ public class MemberService extends MemberRegistry {
     public void searchInfo(){
         System.out.println("Vilken medlem? Ange namn eller personnummer/organistationsnummer.");
     }
-    public List<Member> searchMemberByNameId(String nameOrId){ // söker lägger in i templista och returnerar lista
+    public List<Member> searchMemberByNameIdReturnList(String nameOrId){ // söker lägger in i templista och returnerar lista
         List<Member> foundM= new ArrayList<>();
                 for(Member m : memberRegistryList){
             if(m.getName().equalsIgnoreCase(nameOrId)|| m.getId().equals(nameOrId)){
-                foundM.add(m);}}return foundM;
-    }
-        public void printSearchMemberReg(String nameOrId){
-          List<Member> foundMatches = searchMemberByNameId(nameOrId);
-         if(foundMatches.isEmpty()){System.out.println("Hittade ingen match. Prova igen.");}
-       for(Member member :foundMatches){
-                System.out.println("Hittade "+member.getName()+" med ID: "+ member.getId());}
+                foundM.add(m);}}return foundM;}
+
+     public Member searchMemberByNameOrIdReturnMember(String nameOrId) {
+        Member foundMember = null;
+        for (Member m : memberRegistryList) {
+            if (m.getName().equalsIgnoreCase(nameOrId) || m.getId().equals(nameOrId)) {
+                foundMember = m;
             }
+        }
+        return foundMember;
+    }
+        public void checkListPrintMembersFound(String nameOrId){
+          List<Member> foundMatches = searchMemberByNameIdReturnList(nameOrId);
+            if(foundMatches.size()>= 2) {
+                System.out.println("Hittade flera matchningar");
+                for (int i = 0; i < foundMatches.size(); i++) {
+                    System.out.println("Nr." + i + foundMatches.get(i).getName());}
+                // skriv er ut index i templistan så vi kan hitta det igen sen vid val??
+            }else if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning.");}
+             else { for(Member member : foundMatches){
+               System.out.println("Hittade "+member.getName()+" med ID: "+ member.getId());}
+            }}
 
     public void removeMember(String nameOrId, Scanner scan){
-        List<Member> foundMatches = searchMemberByNameId(nameOrId);
+        List<Member> foundMatches = searchMemberByNameIdReturnList(nameOrId);
         if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning."); return;}
         for(Member m : foundMatches)
         {System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ ". Ska "+ m.getName()+" tas bort från listan? JA / NEJ");
@@ -45,18 +60,15 @@ public class MemberService extends MemberRegistry {
     public void getMemberHistory(Member member){
        System.out.println(member.getHistoryMember()); // måste man göra en loop?
     }
-
     public void printMemberReg() {
         if (memberRegistryList.isEmpty()){System.out.println("Listan är tom.");}
         for (Member m: memberRegistryList){
             System.out.println(m);
         }
     }
-    public void updateMember(String nameOrId, Scanner scan){
-        List<Member> foundMatches =searchMemberByNameId(nameOrId);
-        if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning."); return;}
-        for(Member m : foundMatches)
-        {System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ ". Ska "+ m.getName()+ "s profil uppdateras?\n Om felaktigt ange X!");}
+    public void findAndUpdateMember(String nameOrId, Scanner scan){
+        checkListPrintMembersFound(nameOrId);
+        System.out.print("Ska profilen uppdateras?\n Om felaktigt ange X!");
         System.out.println("Vad vill du uppdatera? \n[N] Namn. [M] Medlemsstatus");
         String userChoiceChange = scan.next();
         if(userChoiceChange.equalsIgnoreCase("N")) {
@@ -67,9 +79,7 @@ public class MemberService extends MemberRegistry {
             System.out.println( "Om privatperson ange P. Om förening ange F.");
             String memberStatus = scan.next();
         }else {System.out.println("Backar till huvudmeny");}
-
     }
-
 
     public void defaultList() { // För testning.
         newMember("920618", "Kickan Karlsson","Privat");
