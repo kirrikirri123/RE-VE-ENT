@@ -4,8 +4,10 @@ import REVENT.database.RentalRegistry;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
 
+import java.util.Scanner;
+
 public class Rental extends RentalRegistry {
-    // ska hålla koll på hyrestiden och koppla ihop item och member. OCh priser
+    // hanterar hyrestid och priser och kopplar ihop item och member.
     private Item rentalItem;
     private int rentDays;
 
@@ -14,7 +16,7 @@ public class Rental extends RentalRegistry {
 
     public Rental(Item rentalItem, int rentDays) {
         this.rentalItem = rentalItem;
-        this.rentDays = rentDays; // Lägg metod som tar in valda tiden från objektet?
+        this.rentDays = rentDays;
     }
     public int getRentDays(){
         return rentDays;
@@ -26,13 +28,18 @@ public class Rental extends RentalRegistry {
         this.rentalItem = rentalItem;}
 //_____________________________________________________________________________________
 
-    public Rental newRental(Item rentalItem, int rentDays){ // Varför ha denna nr man har konstruktor?
+    public Rental newRental(Item rentalItem, int rentDays){
         Rental rental = new Rental(rentalItem,rentDays);
         return rental;
     }
+    public int rentDaysChoice(Scanner scan) {
+        System.out.println("Hur många dagar önskar du hyra?");
+        int days = scan.nextInt();
+        return days;
+    }
 
     public void rentalsToList(Rental rentalItem, Member member) {
-        RentalList.put(rentalItem, member); // Kopplar rental och member mål- item + dagar kopplas med member
+        RentalList.put(rentalItem, member); // Kopplar rental och member. Mål- item + dagar kopplas med member
         addHistory(rentalItem,member); // borde ju då bli samma item och member och inte dubblera sig.
     }
     public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member){
@@ -74,8 +81,11 @@ public double priceDay(double dayPrice,int days) {
         }        return feb;}
 
 public void defaultRentalList(){//för testning
-      //RentalList.put(); // in med rentalItem (item + rentDay) och member
-    }
+    //rentalsToList(newRental(Item,7),Member);
+         }
+
+
+
 }
 
 
