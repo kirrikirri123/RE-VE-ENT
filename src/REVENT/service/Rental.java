@@ -1,9 +1,10 @@
-package REVENT;
+package REVENT.service;
 
-import REVENT.database.RentalRegistry;
+import REVENT.repository.RentalRegistry;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Rental extends RentalRegistry {
@@ -39,7 +40,7 @@ public class Rental extends RentalRegistry {
     }
 
     public void rentalsToList(Rental rentalItem, Member member) {
-        RentalList.put(rentalItem, member); // Kopplar rental och member. Mål- item + dagar kopplas med member
+        rentalList.put(rentalItem, member); // Kopplar rental och member. Mål- item + dagar kopplas med member
         addHistory(rentalItem,member); // borde ju då bli samma item och member och inte dubblera sig.
     }
     public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member){
@@ -53,9 +54,8 @@ public class Rental extends RentalRegistry {
     }
 
     public void printRentalsList() {
-        for (int i = 0; i < RentalList.size(); i++) {
-            System.out.println(i);
-        }}
+        System.out.println(rentalList); // uppdatera med Map.Entry metod!
+        }
 //___________________________________________________________________________
     //Priceing
 public double priceDay(double dayPrice,int days) {

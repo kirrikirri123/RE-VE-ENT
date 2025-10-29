@@ -1,4 +1,4 @@
-package REVENT.database;
+package REVENT.repository;
 
 import REVENT.enity.Member;
 

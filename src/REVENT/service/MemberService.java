@@ -1,9 +1,7 @@
 package REVENT.service;
 
-import REVENT.Rental;
-import REVENT.enity.Item;
 import REVENT.enity.Member;
-import REVENT.database.MemberRegistry;
+import REVENT.repository.MemberRegistry;
 
 import java.util.*;
 
@@ -23,7 +21,7 @@ public class MemberService extends MemberRegistry {
     public List<Member> searchMemberByNameIdReturnList(String nameOrId){ // söker lägger in i templista och returnerar lista
         List<Member> foundM= new ArrayList<>();
                 for(Member m : memberRegistryList){
-            if(m.getName().equalsIgnoreCase(nameOrId)|| m.getId().equals(nameOrId)){
+            if(m.getName().contains(nameOrId)|| m.getId().equals(nameOrId)){
                 foundM.add(m);}}return foundM;}
 
      public Member searchMemberByNameOrIdReturnMember(String nameOrId) {
@@ -38,9 +36,9 @@ public class MemberService extends MemberRegistry {
         public void checkListPrintMembersFound(String nameOrId){
           List<Member> foundMatches = searchMemberByNameIdReturnList(nameOrId);
             if(foundMatches.size()>= 2) {
-                System.out.println("Hittade flera matchningar");
-                for (int i = 0; i < foundMatches.size(); i++) {
-                    System.out.println("Nr." + i + foundMatches.get(i).getName());}
+                System.out.println("Hittade flera matchningar: ");
+                for (int i = 1; i < foundMatches.size(); i++) {
+                    System.out.println("Nr. " + i + foundMatches.get(i).getName() + foundMatches.get(i).getMemberStatus());}
                 // skriv er ut index i templistan så vi kan hitta det igen sen vid val??
             }else if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning.");}
              else { for(Member member : foundMatches){
@@ -71,19 +69,19 @@ public class MemberService extends MemberRegistry {
         }
     }
     public void findAndUpdateMember(String nameOrId, Scanner scan){
-        checkListPrintMembersFound(nameOrId);
+        checkListPrintMembersFound(nameOrId); // Blir fel om  man inte hittar nån matchning. Då rullar uskriften vidare.
         System.out.print("Ska profilen uppdateras?\n Om felaktigt ange X!");
-        System.out.println("Vad vill du uppdatera? \n[N] Namn. [M] Medlemsstatus");
+        System.out.println("Vad vill du uppdatera? \n Ange : [N] Namn [M] Medlemsstatus");
         String userChoiceChange = scan.next();
         if(userChoiceChange.equalsIgnoreCase("N")) {
             System.out.println("Skriv in den nya namnet:");
             String memberFname = scan.next() + " ";
             String memberLname = scan.next(); // Lägg in metod som hanterar förändringen !
-        }else if (userChoiceChange.equalsIgnoreCase("M")){ // Lägg in metod som hanterar förändringen !
+        }else if (userChoiceChange.equalsIgnoreCase("M")){
             System.out.println( "Om privatperson ange P. Om förening ange F.");
-            String memberStatus = scan.next();
+            String memberStatus = scan.next();// Lägg in metod som hanterar förändringen !
         }else {System.out.println("Backar till huvudmeny");}
-    }
+            }
 
     public void defaultList() { // För testning.
         newMember("920618", "Kickan Karlsson","Privat");

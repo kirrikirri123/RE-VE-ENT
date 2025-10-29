@@ -3,8 +3,7 @@ package REVENT.service;
 import REVENT.enity.BouncyCastle;
 import REVENT.enity.Item;
 import REVENT.enity.MascotCostume;
-import REVENT.database.Inventory;
-import REVENT.enity.Member;
+import REVENT.repository.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,12 +100,17 @@ public void checkListPrintItemsFound(String prod) { // onödigt krånglig då It
             System.out.println(item);
         }
     }
+    public void printItemGroup(String attribut){
+        for(Item it : itemsList) {
+            if (it.getDescription().contains(attribut)){
+                System.out.println(it);}}
+            }
 
     public void defaultList() { // För testning.
-        newBouncyItem("Kungliga slottet","Stor hoppborg,för 15 barn",1000, false);
-        newBouncyItem("Slott"," Liten hoppborg,för max 7 barn",450, true);
-        newBouncyItem("UltimateExtreme"," Maxad hoppupplevelse,för max 8 vuxna",3500, false);
-        newMascotItem("Nallebjörn","Kramgo, lurvig brunbjörn", 200,"Året om");
-        newMascotItem("Tomten","Premium tomtedräkt. Kvalitetskläder naturligt skägg. Inga skor medföljer.", 1000,"Jul");
+        newBouncyItem("Kungliga slottet"," Stor hoppborg,för max 15 barn",1000, false);
+        newBouncyItem("Slott"," Liten hoppborg, för max 7 barn",450, true);
+        newBouncyItem("UltimateXtreme"," Maxad hoppupplevelse, för max 8 vuxna",3500, false);
+        newMascotItem("Nallebjörn"," Kramgo, lurvig brunbjörndräkt", 200,"Året om");
+        newMascotItem("Tomten"," Premium tomtedräkt. Kvalitetskläder naturligt skägg. Inga skor medföljer.", 1000,"Jul");
     }
 }
