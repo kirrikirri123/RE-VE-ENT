@@ -81,7 +81,7 @@ public void checkListPrintItemsFound(String prod) { // onödigt krånglig då It
                 if (removeUser.equalsIgnoreCase("ja")){
         itemsList.removeAll(removeI);
         System.out.println(" Produkt borttagen.");}
-        System.out.println(" Se uppdaterad lista:");printItemList();
+        System.out.println(" Se aktuell lista:");printItemList();
     }}
 
     public void newMascotItem(String name, String description, double day, String season) {
@@ -100,6 +100,7 @@ public void checkListPrintItemsFound(String prod) { // onödigt krånglig då It
             System.out.println(item);
         }
     }
+
     public void printItemGroup(String attribut){
         for(Item it : itemsList) {
             if (it.getDescription().contains(attribut)){

@@ -34,30 +34,38 @@ public class Rental extends RentalRegistry {
         return rental;
     }
     public int rentDaysChoice(Scanner scan) {
-        System.out.println("Hur många dagar önskar du hyra?");
+        System.out.println("Hur många dagar önskas hyra?");
         int days = scan.nextInt();
         return days;
     }
 
-    public void rentalsToList(Rental rentalItem, Member member) {
-        rentalList.put(rentalItem, member); // Kopplar rental och member. Mål- item + dagar kopplas med member
-        addHistory(rentalItem,member); // borde ju då bli samma item och member och inte dubblera sig.
-    }
-    public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member){
-        rentalsToList(newRental(rentalItem,rentDays),member);
-        // kan man göra hela kedjan i denna metod?
-        //nytt objekt, koppla objekt till member i rentlista och lägg rentalitem i members historik.
+    public void rentalsToList(Member member,Rental rentalItem) {
+        rentalList.put(member,rentalItem);
+        addHistory(rentalItem,member);
     }
 
     public void addHistory(Rental rentalItem, Member member) {
-        member.getHistoryMember().add(rentalItem); // Lägger rental objektet i historiken hos medlem.
+        member.getHistoryMember().add(rentalItem);
+    }
+
+    public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member){
+        rentalsToList(member,newRental(rentalItem,rentDays));
+        // kan man göra hela kedjan i denna metod?
     }
 
     public void printRentalsList() {
-        System.out.println(rentalList); // uppdatera med Map.Entry metod!
+         System.out.println(rentalList); // uppdatera med Map.Entry metod!
         }
+
+    //Avsluta uthyrning.
+    public int endRentalCountDays(Member member){
+    return rentalList.get(member).rentDays;
+    }
+
 //___________________________________________________________________________
-    //Priceing
+//Priceing
+// Kalla på rentalobjeketet. get dayprice och get.days.
+// Eller ska man ta in objektet som inparameter och göra om i metodern?
 public double priceDay(double dayPrice,int days) {
     //priset i item gånger days från renalitem = totaltpris.
     if(30>= days){ int month =0;
@@ -80,13 +88,10 @@ public double priceDay(double dayPrice,int days) {
                 feb -= 2; }
         }        return feb;}
 
-public void defaultRentalList(){//för testning
-    //rentalsToList(newRental(Item,7),Member);
-         }
 
     @Override
     public String toString() {
-        return "Uthyrd: " + this.rentalItem.getName() + " Planerad hyrestid i dagar: " + this.rentDays+" .";
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+" .";
 
     }
 }

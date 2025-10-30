@@ -7,13 +7,15 @@ import java.util.HashMap;
 
 
 public class RentalRegistry {
-    protected HashMap<Rental,Member> rentalList = new HashMap<Rental,Member>();
+    protected HashMap<Member,Rental> rentalList = new HashMap<Member,Rental>();
 
 public RentalRegistry(){}
 
 
-    public HashMap<Rental, Member> getRentalList() {
+    public HashMap<Member,Rental> getRentalList() {
         return rentalList;
  }
-
+    public void setRentalList(HashMap<Member,Rental> rentalList) {
+        this.rentalList = rentalList;
+    }
 }

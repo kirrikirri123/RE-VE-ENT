@@ -5,7 +5,7 @@ public interface PricePolicy {
     //Ska man skapa två klasser, en för privatperson en för föreningar?
 
     void priceVAT();
-    void discount();// if tomte hyrs på sommaren tex.
+    void discount();
 
 
 }
