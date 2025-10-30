@@ -4,6 +4,8 @@ import REVENT.repository.RentalRegistry;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -11,53 +13,93 @@ public class Rental extends RentalRegistry {
     // hanterar hyrestid och priser och kopplar ihop item och member.
     private Item rentalItem;
     private int rentDays;
+    private LocalDate startOfRent;
 
     public Rental() {
     }
 
-    public Rental(Item rentalItem, int rentDays) {
+    public Rental(Item rentalItem, int rentDays, String startOfRent) { // metoden behöver ta in en String för att kunna skapa en Localdate.
         this.rentalItem = rentalItem;
         this.rentDays = rentDays;
+        this.startOfRent = createStartOfRent(startOfRent);
     }
-    public int getRentDays(){
+
+    public Rental(Item rentalItem, int rentDays){
+        this.rentalItem = rentalItem;
+        this.rentDays = rentDays;
+        this.startOfRent = LocalDate.now();
+    }
+
+    public int getRentDays() {
         return rentDays;
     }
+
     public void setRentDays(int rentDays) {
         this.rentDays = rentDays;
     }
+
     public void setRentalItem(Item rentalItem) {
-        this.rentalItem = rentalItem;}
+        this.rentalItem = rentalItem;
+    }
 //_____________________________________________________________________________________
 
-    public Rental newRental(Item rentalItem, int rentDays){
-        Rental rental = new Rental(rentalItem,rentDays);
+    public Rental newRental(Item rentalItem, int rentDays,String startOfRent) { // Valfritt datum skrivet YYYYMMDD!
+        Rental rental = new Rental(rentalItem, rentDays,startOfRent);
         return rental;
     }
+    public Rental newRental(Item rentalItem, int rentDays) { // Blir default dagens datum.
+        Rental rental = new Rental(rentalItem, rentDays);
+        return rental;
+    }
+    // skapa start
+ public LocalDate createStartOfRent(String YYYYMMDD){
+     DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+     LocalDate startOfRent = LocalDate.parse(YYYYMMDD,styleDate);
+     return startOfRent;
+ }
+    //önska antal
     public int rentDaysChoice(Scanner scan) {
-        System.out.println("Hur många dagar önskar du hyra?");
+        System.out.println("Hur många dagar önskas hyra?");
         int days = scan.nextInt();
         return days;
     }
-
-    public void rentalsToList(Rental rentalItem, Member member) {
-        rentalList.put(rentalItem, member); // Kopplar rental och member. Mål- item + dagar kopplas med member
-        addHistory(rentalItem,member); // borde ju då bli samma item och member och inte dubblera sig.
+    // byt antal
+    public void changeRentDays(Member member, int x){
+        rentalList.get(member).setRentDays(x);
     }
-    public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member){
-        rentalsToList(newRental(rentalItem,rentDays),member);
-        // kan man göra hela kedjan i denna metod?
-        //nytt objekt, koppla objekt till member i rentlista och lägg rentalitem i members historik.
+    //visa valt antal
+    public int rentalCountDays(Member member) {
+        return rentalList.get(member).rentDays;
+    }
+    public void chooseDateInfo(){
+        System.out.println("Vilket datum? Om idag skriv i formatet ÅÅÅÅ-MM-DD.");
+    }
+    public String userChooseDate(String dateStartString){
+         return dateStartString.replace(' ','-');}
+
+    public void rentalsToList(Member member, Rental rentalItem) {
+        rentalList.put(member, rentalItem);
+        addHistory(rentalItem, member);
     }
 
     public void addHistory(Rental rentalItem, Member member) {
-        member.getHistoryMember().add(rentalItem); // Lägger rental objektet i historiken hos medlem.
+        member.getHistoryMember().add(rentalItem);
+    }
+
+    public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member) {
+        rentalsToList(member, newRental(rentalItem, rentDays));
+        // kan man göra hela kedjan i denna metod?
     }
 
     public void printRentalsList() {
         System.out.println(rentalList); // uppdatera med Map.Entry metod!
-        }
+    }
+
+
 //___________________________________________________________________________
-    //Priceing
+//Priceing
+// Kalla på rentalobjeketet. get dayprice och get.days.
+// Eller ska man ta in objektet som inparameter och göra om i metodern?
 public double priceDay(double dayPrice,int days) {
     //priset i item gånger days från renalitem = totaltpris.
     if(30>= days){ int month =0;
@@ -80,13 +122,10 @@ public double priceDay(double dayPrice,int days) {
                 feb -= 2; }
         }        return feb;}
 
-public void defaultRentalList(){//för testning
-    //rentalsToList(newRental(Item,7),Member);
-         }
 
     @Override
     public String toString() {
-        return "Uthyrd: " + this.rentalItem.getName() + " Planerad hyrestid i dagar: " + this.rentDays+" .";
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyres-start: "+ this.startOfRent;
 
     }
 }

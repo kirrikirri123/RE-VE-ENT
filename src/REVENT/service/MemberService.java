@@ -6,7 +6,8 @@ import REVENT.repository.MemberRegistry;
 import java.util.*;
 
 public class MemberService extends MemberRegistry {
-// Hanterar memberfunktioner.
+// Hanterar memberfunktioner samt medlemsrabatter?
+
 
     public void newMember(String id, String name, String memberStatus){
         Member member = new Member(id,name,memberStatus);
@@ -15,16 +16,18 @@ public class MemberService extends MemberRegistry {
     public void addMemberList(Member member) {
         getMemberRegistryList().add(member);
     }
+
     public void searchInfo(){
         System.out.println("Vilken medlem? Ange namn eller personnummer/organistationsnummer.");
     }
+
     public List<Member> searchMemberByNameIdReturnList(String nameOrId){ // söker lägger in i templista och returnerar lista
         List<Member> foundM= new ArrayList<>();
                 for(Member m : memberRegistryList){
             if(m.getName().contains(nameOrId)|| m.getId().equals(nameOrId)){
                 foundM.add(m);}}return foundM;}
 
-     public Member searchMemberByNameOrIdReturnMember(String nameOrId) {
+    public Member searchMemberByNameOrIdReturnMember(String nameOrId) {
         Member foundMember = null;
         for (Member m : memberRegistryList) {
             if (m.getName().equalsIgnoreCase(nameOrId) || m.getId().equals(nameOrId)) {
@@ -33,7 +36,8 @@ public class MemberService extends MemberRegistry {
         }
         return foundMember;
     }
-        public void checkListPrintMembersFound(String nameOrId){
+
+    public void checkListPrintMembersFound(String nameOrId){
           List<Member> foundMatches = searchMemberByNameIdReturnList(nameOrId);
             if(foundMatches.size()>= 2) {
                 System.out.println("Hittade flera matchningar: ");
@@ -68,24 +72,28 @@ public class MemberService extends MemberRegistry {
             System.out.println(m);
         }
     }
+
     public void findAndUpdateMember(String nameOrId, Scanner scan){
         checkListPrintMembersFound(nameOrId); // Blir fel om  man inte hittar nån matchning. Då rullar uskriften vidare.
         System.out.print("Ska profilen uppdateras?\n Om felaktigt ange X!");
         System.out.println("Vad vill du uppdatera? \n Ange : [N] Namn [M] Medlemsstatus");
-        String userChoiceChange = scan.next();
+        String userChoiceChange = scan.nextLine();
         if(userChoiceChange.equalsIgnoreCase("N")) {
             System.out.println("Skriv in den nya namnet:");
             String memberFname = scan.next() + " ";
-            String memberLname = scan.next(); // Lägg in metod som hanterar förändringen !
+            String memberLname = scan.next();
+            scan.nextLine(); //cleaningcrew // Lägg in metod som hanterar förändringen !
         }else if (userChoiceChange.equalsIgnoreCase("M")){
             System.out.println( "Om privatperson ange P. Om förening ange F.");
-            String memberStatus = scan.next();// Lägg in metod som hanterar förändringen !
+            String memberStatus = scan.nextLine();// Lägg in metod som hanterar förändringen !
         }else {System.out.println("Backar till huvudmeny");}
             }
 
     public void defaultList() { // För testning.
+        newMember("112", "Pelle Polis","Privat");
+        newMember("123", "Björn Varg","Privat");
         newMember("920618", "Kickan Karlsson","Privat");
-        newMember("690524","Bengan Bertholdsson","Privat");
+        newMember("1","Marta Mus","Privat");
         newMember("123456", "Ersboda Pingisföreningsklubb","Förening");
     }
 

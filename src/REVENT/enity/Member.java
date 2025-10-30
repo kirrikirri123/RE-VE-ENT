@@ -45,6 +45,6 @@ public class Member {
         }
 @Override
     public String toString() {
-       return "Id-nummer:"+ this.id + "\n Namn:"+ this.name +".";
+       return "Id-nummer:"+ this.id + ", Namn:"+ this.name +".";
 }
 }
