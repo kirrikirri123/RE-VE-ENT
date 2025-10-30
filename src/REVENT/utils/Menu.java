@@ -102,11 +102,11 @@ public class Menu {
                  memberService.getMemberHistory(memberService.searchMemberByNameOrIdReturnMember(userHistory));
                 break;
             case "E": System.out.println(" Ursprungliga dagar");
-                memberService.searchInfo();
+               memberService.searchInfo();
                String userDaysLogged = scan.nextLine();
                 Member memberDayCheck = memberService.searchMemberByNameOrIdReturnMember(userDaysLogged);
-                System.out.println(rental.endRentalCountDays(memberDayCheck));
-                break;
+                System.out.println(rental.rentalCountDays(memberDayCheck));
+                                break;
             case "B":
                 System.out.println("Backar");break;
             case "A":

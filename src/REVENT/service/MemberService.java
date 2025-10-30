@@ -90,8 +90,10 @@ public class MemberService extends MemberRegistry {
             }
 
     public void defaultList() { // För testning.
+        newMember("112", "Pelle Polis","Privat");
+        newMember("123", "Björn Varg","Privat");
         newMember("920618", "Kickan Karlsson","Privat");
-        newMember("690524","Bengan Bertholdsson","Privat");
+        newMember("1","Marta Mus","Privat");
         newMember("123456", "Ersboda Pingisföreningsklubb","Förening");
     }
 
