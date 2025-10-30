@@ -20,14 +20,7 @@ public class RentalService extends Inventory {
          else if (userRentalChoice.equalsIgnoreCase("avsluta")) {
              stopRental("avsluta");
          }
-     }
-     public void stopRental(String userRentalChoice) {
-         if (userRentalChoice.equalsIgnoreCase("avsluta")) {
-             // vad ska  göras? om någon blir galet eller om kunden vill avsluta i förtid?
-         } else if (userRentalChoice.equalsIgnoreCase("boka")) {
-             bookRental("boka");
-         }
-     }*/
+  */
     public void addItemToList(Item item) {
         getItemsList().add(item);
     }
@@ -35,6 +28,7 @@ public class RentalService extends Inventory {
     public void searchProd() {
         System.out.println("Vilken produkt?");
     }
+
     public List<Item> searchItemByName(String prod) {
         List<Item> foundI = new ArrayList<>();
         for (Item i : itemsList) {
@@ -42,6 +36,7 @@ public class RentalService extends Inventory {
                 foundI.add(i);} }
         return foundI;
     }
+
     public Item searchItemByNameReturnItem(String prod) {
         Item foundItem = null;
         for (Item it : itemsList) {
@@ -51,12 +46,12 @@ public class RentalService extends Inventory {
         }
         return foundItem;}
 
-public void checkListPrintItemsFound(String prod) { // onödigt krånglig då Itemslist är en ArrayList?
+    public void checkListPrintItemsFound(String prod) { // onödigt krånglig då Itemslist är en ArrayList?
     List<Item> foundMatches = searchItemByName(prod);
     if (foundMatches.size() >= 2) {
         System.out.println("Hittade flera matchningar.");
         for (int i = 0; i < foundMatches.size(); i++) {
-            System.out.println("Nr." + i + foundMatches.get(i).getName());}
+            System.out.println("Nr." + i + foundMatches.get(i).getName());} // Måste fixa metod för att välja mellan dessa val?
     } else if (foundMatches.isEmpty()) {
         System.out.println("Hittade ingen matchning.");
     } else {

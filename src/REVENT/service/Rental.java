@@ -51,19 +51,31 @@ public class Rental extends RentalRegistry {
         Rental rental = new Rental(rentalItem, rentDays);
         return rental;
     }
+    // skapa start
  public LocalDate createStartOfRent(String YYYYMMDD){
      DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
      LocalDate startOfRent = LocalDate.parse(YYYYMMDD,styleDate);
      return startOfRent;
  }
-
-
-
+    //önska antal
     public int rentDaysChoice(Scanner scan) {
         System.out.println("Hur många dagar önskas hyra?");
         int days = scan.nextInt();
         return days;
     }
+    // byt antal
+    public void changeRentDays(Member member, int x){
+        rentalList.get(member).setRentDays(x);
+    }
+    //visa valt antal
+    public int rentalCountDays(Member member) {
+        return rentalList.get(member).rentDays;
+    }
+    public void chooseDateInfo(){
+        System.out.println("Vilket datum? Om idag skriv i formatet ÅÅÅÅ-MM-DD.");
+    }
+    public String userChooseDate(String dateStartString){
+         return dateStartString.replace(' ','-');}
 
     public void rentalsToList(Member member, Rental rentalItem) {
         rentalList.put(member, rentalItem);
@@ -81,11 +93,6 @@ public class Rental extends RentalRegistry {
 
     public void printRentalsList() {
         System.out.println(rentalList); // uppdatera med Map.Entry metod!
-    }
-
-    //Avsluta uthyrning.
-    public int rentalCountDays(Member member) { // man kan bara hyra en sak åt gången?
-        return rentalList.get(member).rentDays;
     }
 
 
@@ -118,7 +125,7 @@ public double priceDay(double dayPrice,int days) {
 
     @Override
     public String toString() {
-        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+" .";
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyres-start: "+ this.startOfRent;
 
     }
 }

@@ -6,6 +6,7 @@ import REVENT.enity.Member;
 import REVENT.service.MemberService;
 import REVENT.service.RentalService;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Menu {
@@ -31,7 +32,7 @@ public class Menu {
 
     public void productMenu(Scanner scan) {
         System.out.println("Produkter");
-        System.out.println(" Gör ett val: \n[V] Visa alla produkter. [D] Dräkter. [H] Hoppborgar. [N] Ny produkt. [S] Sök och ta bort produkt. [B] Backa till Huvudmeny");
+        System.out.println(" Gör ett val: \n[V] Visa alla produkter. [D] Dräkter. [H] Hoppborgar. [N] Ny produkt. [X] Ta bort produkt. [B] Backa till Huvudmeny");
         String itemSort = scan.nextLine();
           switch (itemSort.toUpperCase()) {
             case "V" : rentalService.printItemList();
@@ -43,10 +44,15 @@ public class Menu {
                 rentalService.printItemGroup("hopp");
                  break;
             case "N" : System.out.println("Ny produkt\n Under uppbyggnad"); break;
-            case "S" :
+            case "S" : System.out.println("Sök produkt");
+                rentalService.searchProd();
+                String userSearchProd = scan.nextLine();
+            rentalService.checkListPrintItemsFound(userSearchProd);
+            break;
+            case "X" : System.out.println("Borttagning av produkt");
             rentalService.searchProd();
-            String userSearchProd = scan.nextLine();
-            rentalService.removeItemFromList(userSearchProd,scan);
+            String userRemove = scan.nextLine();
+            rentalService.removeItemFromList(userRemove,scan);
             break;
             case "B" : System.out.println("Backar");break;
             default:
@@ -101,12 +107,7 @@ public class Menu {
                 String userHistory = scan.nextLine();
                  memberService.getMemberHistory(memberService.searchMemberByNameOrIdReturnMember(userHistory));
                 break;
-            case "E": System.out.println(" Ursprungliga dagar");
-               memberService.searchInfo();
-               String userDaysLogged = scan.nextLine();
-                Member memberDayCheck = memberService.searchMemberByNameOrIdReturnMember(userDaysLogged);
-                System.out.println(rental.rentalCountDays(memberDayCheck));
-                                break;
+            case "E": //Test Case          break;
             case "B":
                 System.out.println("Backar");break;
             case "A":
@@ -134,11 +135,14 @@ public class Menu {
                 int indexOfProd = rentalService.searchItemGetListIndex(userProdRental);
                 int rentDayInput = rental.rentDaysChoice(scan);
                 clearingScan(scan);
-                System.out.println("Granska bokning: "+ choosenRentItem.getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar.");
+                rental.chooseDateInfo();
+                String userChooseDateOfStart = scan.nextLine();
+                String dateStartRent=rental.userChooseDate(userChooseDateOfStart);
+                System.out.println("Granska bokning: "+ choosenRentItem.getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar, från och med "+ dateStartRent);
                 System.out.println("Bekräfta med J för att boka. Annars X.");
                 String validateChoice = scan.nextLine();
                 if(validateChoice.equalsIgnoreCase("J")) {
-                Rental newRentalItem = rental.newRental(rentalService.getItemsList().get(indexOfProd),rentDayInput);
+                Rental newRentalItem = rental.newRental(rentalService.getItemsList().get(indexOfProd),rentDayInput,dateStartRent);
                 rental.rentalsToList(choosenRentMember,newRentalItem);
                 System.out.println("Bokat!");
                 }else{System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
