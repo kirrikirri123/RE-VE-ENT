@@ -7,6 +7,7 @@ import REVENT.service.MemberService;
 import REVENT.service.RentalService;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Menu {
@@ -135,7 +136,7 @@ public class Menu {
                 int indexOfProd = rentalService.searchItemGetListIndex(userProdRental);
                 int rentDayInput = rental.rentDaysChoice(scan);
                 clearingScan(scan);
-                rental.chooseDateInfo();
+                rental.chooseDateInfo("Starta");
                 String userChooseDateOfStart = scan.nextLine();
                 String dateStartRent=rental.userChooseDate(userChooseDateOfStart);
                 System.out.println("Granska bokning: "+ choosenRentItem.getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar, från och med "+ dateStartRent);
@@ -148,6 +149,20 @@ public class Menu {
                 }else{System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
                 break;
             case "A" : System.out.println("Avsluta uthyrning");
+            System.out.println("Återlämning av produkt ");
+            memberService.searchInfo();
+            String rentalitemReturn = scan.nextLine();
+            Member returningMember =memberService.searchMemberByNameOrIdReturnMember(rentalitemReturn);
+            String rentalitemName = rental.returnRentalitemName(returningMember);
+            rental.chooseDateInfo("Åter ");
+            String userReturnRentalItem = scan.nextLine();
+            String dateStopRent =rental.userChooseDate(userReturnRentalItem);
+            System.out.println("Granska återlämning: " + dateStopRent + " återlämnade " + returningMember.getName() + " produkten " + rentalitemName + " ?  JA /NEJ " );
+            String userValidationReturn = scan.nextLine();
+            if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!"); }
+            //Lägg till nått i Medlemmenslista?  och betlaning.
+                // Räkna ut och meddela kostnaden.
+             break;
             case "H" : System.out.println("Generell uthyrningshistorik");
             rental.printRentalsList();
                    break;
@@ -161,7 +176,8 @@ public class Menu {
  public void economyMenu() {
         //Summera intäkter
         System.out.println("Ekonomi");
-            }
+     rental.sumRentalsList();
+    }
 
 public void clearingScan(Scanner scan){ scan.nextLine();}
 }
