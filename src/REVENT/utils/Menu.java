@@ -168,7 +168,12 @@ public class Menu {
             if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!"); }
 
             //Lägg till nått i Medlemenslista?  och betalning.
-                // Räkna ut och meddela kostnaden.
+
+             // Räkna ut och meddela kostnaden.
+            double rentalItemDayprice = rental.returnRentalDayPrice(returningMember);
+            int rentalItemDaysRented = rental.rentalCountDays(returningMember);
+            double totalBasePrice = rental.priceDay(rentalItemDayprice, rentalItemDaysRented);
+            System.out.println("Du hyrde i "+ rentalItemDaysRented + " dagar. Totalkostnaden: "+ totalBasePrice+ "kr.");
              break;
             case "H" : System.out.println("Generell uthyrningshistorik");
             rental.printRentalsList();

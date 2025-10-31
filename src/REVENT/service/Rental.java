@@ -10,10 +10,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Rental extends RentalRegistry {
-    // hanterar hyrestid och priser och kopplar ihop item och member.
+    // hanterar hyrestid och priser och kopplar ihop item och member. Flytta alla metoder till RentalService och låt denna klass bara skapa Rentalobjekt.
     private Item rentalItem;
     private int rentDays;
     private LocalDate startOfRent;
+    //private boolean returned; ?
 
     public Rental() {
     }
@@ -61,15 +62,13 @@ public class Rental extends RentalRegistry {
     public LocalDate createDateOfRent(String YYYYMMDD) {
         DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate datetOfRent = LocalDate.parse(YYYYMMDD, styleDate);
-        return datetOfRent;
-    }
+        return datetOfRent;    }
 
     //önska antal
     public int rentDaysChoice(Scanner scan) {
         System.out.println("Hur många dagar önskas hyra?");
         int days = scan.nextInt();
-        return days;
-    }
+        return days;    }
 
     // byt antal
     public void changeRentDays(Member member, int x) {
@@ -131,7 +130,7 @@ public class Rental extends RentalRegistry {
 //Priceing
 // Kalla på rentalobjeketet. get dayprice och get.days.
 // Eller ska man ta in objektet som inparameter och göra om i metodern?
-public double priceDay(double dayPrice,int days) {
+public double priceDay(double dayPrice,int days) {// Byt namn på metod
     //priset i item gånger days från renalitem = totaltpris.
     if(30>= days){ int month =0;
         for(int i=0,j=30;i< days;i++,j++){
