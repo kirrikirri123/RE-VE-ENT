@@ -6,7 +6,6 @@ import REVENT.enity.Member;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -42,6 +41,7 @@ public class Rental extends RentalRegistry {
     public void setRentalItem(Item rentalItem) {
         this.rentalItem = rentalItem;
     }
+
     public LocalDate getStartOfRent(){
         return startOfRent;
             }
@@ -75,7 +75,6 @@ public class Rental extends RentalRegistry {
     public void changeRentDays(Member member, int x) {
         rentalList.get(member).setRentDays(x);
     }
-
     //visa valt antal
     public int rentalCountDays(Member member) {
         return rentalList.get(member).rentDays;
@@ -119,7 +118,6 @@ public class Rental extends RentalRegistry {
     public void countActualDays(String stopDate, Member member){
         LocalDate stopRent = createDateOfRent(stopDate); // hämta in datum för reel retur
         LocalDate theStartOfRent = rentalList.get(member).getStartOfRent(); // satt sedan innan
-        
 
         // ta localdate start jämför mot localdate avsluta. utfallet ändrar attribut Rentdays
     }
@@ -142,7 +140,6 @@ public double priceDay(double dayPrice,int days) {
         priceMonth(dayPrice,month);
     }
     return dayPrice * days;
-
 }
  public double priceMonth(double dayPrice,int months) {
      return (months*30)*dayPrice / 2; // om de ksa bli uskrift av denna kör printf(%.f2)
