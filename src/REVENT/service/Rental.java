@@ -7,6 +7,7 @@ import REVENT.enity.Member;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Rental extends RentalRegistry {
@@ -21,10 +22,10 @@ public class Rental extends RentalRegistry {
     public Rental(Item rentalItem, int rentDays, String startOfRent) { // metoden behöver ta in en String för att kunna skapa en Localdate.
         this.rentalItem = rentalItem;
         this.rentDays = rentDays;
-        this.startOfRent = createStartOfRent(startOfRent);
+        this.startOfRent = createDateOfRent(startOfRent);
     }
 
-    public Rental(Item rentalItem, int rentDays){
+    public Rental(Item rentalItem, int rentDays) {
         this.rentalItem = rentalItem;
         this.rentDays = rentDays;
         this.startOfRent = LocalDate.now();
@@ -41,38 +42,59 @@ public class Rental extends RentalRegistry {
     public void setRentalItem(Item rentalItem) {
         this.rentalItem = rentalItem;
     }
+    public LocalDate getStartOfRent(){
+        return startOfRent;
+            }
 //_____________________________________________________________________________________
 
-    public Rental newRental(Item rentalItem, int rentDays,String startOfRent) { // Valfritt datum skrivet YYYYMMDD!
-        Rental rental = new Rental(rentalItem, rentDays,startOfRent);
+    public Rental newRental(Item rentalItem, int rentDays, String startOfRent) { // Valfritt datum skrivet YYYYMMDD!
+        Rental rental = new Rental(rentalItem, rentDays, startOfRent);
         return rental;
     }
+
     public Rental newRental(Item rentalItem, int rentDays) { // Blir default dagens datum.
         Rental rental = new Rental(rentalItem, rentDays);
         return rental;
     }
+
     // skapa start
- public LocalDate createStartOfRent(String YYYYMMDD){
-     DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-     LocalDate startOfRent = LocalDate.parse(YYYYMMDD,styleDate);
-     return startOfRent;
- }
+    public LocalDate createDateOfRent(String YYYYMMDD) {
+        DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate datetOfRent = LocalDate.parse(YYYYMMDD, styleDate);
+        return datetOfRent;
+    }
+
     //önska antal
     public int rentDaysChoice(Scanner scan) {
         System.out.println("Hur många dagar önskas hyra?");
         int days = scan.nextInt();
         return days;
     }
+
     // byt antal
-    public void changeRentDays(Member member, int x){
+    public void changeRentDays(Member member, int x) {
         rentalList.get(member).setRentDays(x);
     }
+
     //visa valt antal
     public int rentalCountDays(Member member) {
         return rentalList.get(member).rentDays;
     }
-    public void chooseDateInfo(){
-        System.out.println("Vilket datum? Om idag skriv i formatet ÅÅÅÅ-MM-DD.");
+
+    public double returnRentalDayPrice(Member member) {
+        return rentalList.get(member).rentalItem.getDayPrice();
+    }
+
+    public String returnRentalItemName(Member member){
+        return rentalList.get(member).rentalItem.getName();
+    }
+
+    public Rental returnsRentalObject(Member member){
+        return rentalList.get(member);
+        }
+
+    public void chooseDateInfo(String when){
+        System.out.println(when + " vilket datum? Skriv i formatet ÅÅÅÅ-MM-DD.");
     }
     public String userChooseDate(String dateStartString){
          return dateStartString.replace(' ','-');}
@@ -85,16 +107,27 @@ public class Rental extends RentalRegistry {
     public void addHistory(Rental rentalItem, Member member) {
         member.getHistoryMember().add(rentalItem);
     }
-
     public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member) {
         rentalsToList(member, newRental(rentalItem, rentDays));
         // kan man göra hela kedjan i denna metod?
     }
 
     public void printRentalsList() {
-        System.out.println(rentalList); // uppdatera med Map.Entry metod!
+        for(Map.Entry<Member,Rental> entry :rentalList.entrySet()) {
+            System.out.println(entry.getKey() + " - "+ entry.getValue());}}
+
+    public void countActualDays(String stopDate, Member member){
+        LocalDate stopRent = createDateOfRent(stopDate); // hämta in datum för reel retur
+        LocalDate theStartOfRent = rentalList.get(member).getStartOfRent(); // satt sedan innan
+        
+
+        // ta localdate start jämför mot localdate avsluta. utfallet ändrar attribut Rentdays
     }
 
+    public void sumRentalsList() {
+        for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
+             {System.out.println(entry.getKey()+ " "+ entry.getValue().rentalItem + ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr.");
+             }}}
 
 //___________________________________________________________________________
 //Priceing
@@ -125,7 +158,7 @@ public double priceDay(double dayPrice,int days) {
 
     @Override
     public String toString() {
-        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyres-start: "+ this.startOfRent;
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent;
 
     }
 }

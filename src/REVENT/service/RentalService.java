@@ -12,15 +12,6 @@ import java.util.Scanner;
 public class RentalService extends Inventory {
     //hanterar Item-funktioner kopplade till uthyrning.
 
-    /* public void bookRental(String userRentalChoice) {
-         if (userRentalChoice.equalsIgnoreCase("boka")) {
-         } //Val hur länge man vill boka. Sätta datum. Kunden får skriva in datum för start och stop. Vi beräknar från det hur många dagar?
-         // eller ska man ha fasta förslag på  dag,  helg (3 dagar)  Måndag (lägg in variabel på vilken månad.)
-
-         else if (userRentalChoice.equalsIgnoreCase("avsluta")) {
-             stopRental("avsluta");
-         }
-  */
     public void addItemToList(Item item) {
         getItemsList().add(item);
     }
