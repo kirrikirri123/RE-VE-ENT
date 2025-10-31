@@ -4,11 +4,9 @@ public class Society implements PricePolicy{
 
 
     @Override
-    public void priceVAT() {
-        //*1;
-        //riktigtpris * denna metod = betalningen som ska in.
-
-    }
+    public String priceVAT(double x) {
+        return "Totalkostnad: "+ x + "kr.\nexkl. moms.";
+         }
 
     @Override
     public double discount(double x) {

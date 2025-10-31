@@ -19,7 +19,7 @@ public class Rental extends RentalRegistry {
     public Rental() {
     }
 
-    public Rental(Item rentalItem, int rentDays, String startOfRent) { // metoden behöver ta in en String för att kunna skapa en Localdate.
+    public Rental(Item rentalItem, int rentDays, String startOfRent) {
         this.rentalItem = rentalItem;
         this.rentDays = rentDays;
         this.startOfRent = createDateOfRent(startOfRent);
@@ -136,18 +136,20 @@ public class Rental extends RentalRegistry {
     public void sumRentalsList() {
         System.out.println("Hyrestransaktioner idag: ");
         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
-             {System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
-                     ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays);
+             {    double price = calculateDay(entry.getValue().rentalItem.getDayPrice(),entry.getValue().rentDays);// Denna metoden funkar dåligt och tar inte in pricepolicy.
+                 System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
+                     ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays
+                     + ". Beräknad intäkt på uthyrningen: "+price+ " kr.");
              }}}
 
 //___________________________________________________________________________
 //Priceing
 
 // Eller ska man ta in objektet som inparameter och göra om i metodern?
-public double calculateDay(double dayPrice,int days) {
+public double calculateDay(double dayPrice,int days) { // Hur göra med månadspris ? Efter 2 månader köra på ett månads pris per påbörjad månad?
     double price = dayPrice * days;
     if(days>=30){ int month =0;
-        for(int i=0,j=30;i< days;i++,j++){
+        for(int i=0,j=30;i< days-30;i++,j++){
             if(j==30||j==60||j==90||j==120||j==150|| j==180){
                 month++;}
             price = priceMonth(dayPrice,month);
@@ -155,7 +157,7 @@ public double calculateDay(double dayPrice,int days) {
         }
         return price;
 }
- public double priceMonth(double dayPrice,int months) {
+ public double priceMonth(double dayPrice,int months) { // Denna räknar alltid ut halva priset per månad osvasett om det är 31 eller 59 dagar.. se
      return (months*30)*dayPrice / 2; // om de ksa bli uskrift av denna kör printf(%.f2)
 
  }

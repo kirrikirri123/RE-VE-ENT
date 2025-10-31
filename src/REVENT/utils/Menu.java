@@ -178,12 +178,11 @@ public class Menu {
             double rentalItemDayprice = rental.returnRentalDayPrice(returningMember);
             int rentalItemDaysRented = rental.rentalCountDays(returningMember);
             double totalBasePrice = rental.calculateDay(rentalItemDayprice, rentalItemDaysRented);
-           double totalPrice = 0; // Nånting i uträkningen blir fel.
             if(returningMember.getMemberStatus().equalsIgnoreCase("privat")){
-                 totalPrice = privateIndividual.discount(totalBasePrice);
-            }else{ totalPrice = society.discount(totalBasePrice); }
-            System.out.println("Du hyrde i "+ rentalItemDaysRented + " dagar. Totalkostnaden: "+ totalPrice + "kr.");
-
+                 String totalPrice = privateIndividual.priceVAT(privateIndividual.discount(totalBasePrice));
+                System.out.println("Utyrningen varade i "+ rentalItemDaysRented + " dagar.\n"+ totalPrice);
+            }else{ String totalPrice = society.priceVAT(society.discount(totalBasePrice));
+                System.out.println("Uthyrningen varade i "+ rentalItemDaysRented + " dagar.\n"+ totalPrice);}
              break;
             case "H" : System.out.println("Generell uthyrningshistorik");
             rental.printRentalsList();
