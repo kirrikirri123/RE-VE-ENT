@@ -131,12 +131,12 @@ public class Rental extends RentalRegistry {
         LocalDate theStartOfRent = rentalList.get(member).getStartOfRent(); // satt sedan innan
 
         // ta localdate start jämför mot localdate avsluta. utfallet ändrar attribut Rentdays
-    }
+    } //FUNGERAR EJ
 
     public void sumRentalsList() {
         System.out.println("Hyrestransaktioner idag: ");
         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
-             {System.out.println(entry.getKey()+ " "+ entry.getValue().rentalItem.getName() +
+             {System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
                      ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays);
              }}}
 
@@ -146,7 +146,7 @@ public class Rental extends RentalRegistry {
 // Eller ska man ta in objektet som inparameter och göra om i metodern?
 public double calculateDay(double dayPrice,int days) {
     double price = dayPrice * days;
-    if(30>= days){ int month =0;
+    if(days>=30){ int month =0;
         for(int i=0,j=30;i< days;i++,j++){
             if(j==30||j==60||j==90||j==120||j==150|| j==180){
                 month++;}

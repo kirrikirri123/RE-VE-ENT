@@ -9,6 +9,7 @@ import REVENT.service.MemberService;
 import REVENT.service.RentalService;
 
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Menu {
@@ -153,10 +154,11 @@ public class Menu {
                 System.out.println("Granska bokning: "+ choosenRentItem.getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar, från och med "+ dateStartRent);
                 System.out.println("Bekräfta med J för att boka. Annars X.");
                 String validateChoice = scan.nextLine();
-                if(validateChoice.equalsIgnoreCase("J")) {
+                if(validateChoice.startsWith("J")) {
                 Rental newRentalItem = rental.newRental(rentalService.getItemsList().get(indexOfProd),rentDayInput,dateStartRent);
                 rental.rentalsToList(choosenRentMember,newRentalItem);
-                System.out.println("Bokat!"); // Lägg till planerat returdatum ?
+                LocalDate estimatedReturnDate = rental.createDateOfRent(dateStartRent).plusDays(rentDayInput);
+                System.out.println("Bokat! "+ "Planerat återlämningsdatum: "+ estimatedReturnDate);
                 }else{System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
                 break;
             case "A" : System.out.println("Avsluta uthyrning");
@@ -176,8 +178,8 @@ public class Menu {
             double rentalItemDayprice = rental.returnRentalDayPrice(returningMember);
             int rentalItemDaysRented = rental.rentalCountDays(returningMember);
             double totalBasePrice = rental.calculateDay(rentalItemDayprice, rentalItemDaysRented);
-           double totalPrice = 0;
-            if(returningMember.getMemberStatus().equals("private")){
+           double totalPrice = 0; // Nånting i uträkningen blir fel.
+            if(returningMember.getMemberStatus().equalsIgnoreCase("privat")){
                  totalPrice = privateIndividual.discount(totalBasePrice);
             }else{ totalPrice = society.discount(totalBasePrice); }
             System.out.println("Du hyrde i "+ rentalItemDaysRented + " dagar. Totalkostnaden: "+ totalPrice + "kr.");
