@@ -6,14 +6,18 @@ import REVENT.enity.Member;
 import REVENT.service.MemberService;
 import REVENT.service.RentalService;
 
-import java.time.LocalDate;
-import java.util.Map;
+
 import java.util.Scanner;
 
 public class Menu {
-    MemberService memberService = new MemberService();
-    RentalService rentalService = new RentalService();
-    Rental rental = new Rental();
+    // Lägg in objekt av Listorna här så objekt nedan kan ta in dem och användas den vägen! - Mer rätt!
+    // Inventory inventory = new Inventory();
+    // MemberRegestry memberRegestry = new memberRegestry();
+    //RentalRegestry rentalRegestry = new rentalRegestry();
+
+    MemberService memberService = new MemberService(); //Skicka in memberRegestry
+    RentalService rentalService = new RentalService(); //Skicka in inventory
+    Rental rental = new Rental(); //Skicka in rentalRegestry
 
     public void startMenuChoice() {
         System.out.println(
@@ -44,7 +48,9 @@ public class Menu {
             case "H" : System.out.println("Hoppborgar");
                 rentalService.printItemGroup("hopp");
                  break;
-            case "N" : System.out.println("Ny produkt\n Under uppbyggnad"); break;
+            case "N" : System.out.println("Ny produkt\n Under uppbyggnad");
+
+            break;
             case "S" : System.out.println("Sök produkt");
                 rentalService.searchProd();
                 String userSearchProd = scan.nextLine();
@@ -154,15 +160,20 @@ public class Menu {
             String rentalitemReturn = scan.nextLine();
             Member returningMember =memberService.searchMemberByNameOrIdReturnMember(rentalitemReturn);
             String rentalitemName = rental.returnRentalItemName(returningMember);
-            rental.chooseDateInfo("Åter ");
+            rental.chooseDateInfo("Åter");
             String userReturnRentalItem = scan.nextLine();
             String dateStopRent =rental.userChooseDate(userReturnRentalItem);
             System.out.println("Granska återlämning: " + dateStopRent + " återlämnade " + returningMember.getName() + " produkten " + rentalitemName + " ?  JA /NEJ " );
             String userValidationReturn = scan.nextLine();
             if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!"); }
 
-            //Lägg till nått i Medlemmenslista?  och betlaning.
-                // Räkna ut och meddela kostnaden.
+            //Lägg till nått i Medlemenslista?  och betalning.
+
+             // Räkna ut och meddela kostnaden.
+            double rentalItemDayprice = rental.returnRentalDayPrice(returningMember);
+            int rentalItemDaysRented = rental.rentalCountDays(returningMember);
+            double totalBasePrice = rental.priceDay(rentalItemDayprice, rentalItemDaysRented);
+            System.out.println("Du hyrde i "+ rentalItemDaysRented + " dagar. Totalkostnaden: "+ totalBasePrice+ "kr.");
              break;
             case "H" : System.out.println("Generell uthyrningshistorik");
             rental.printRentalsList();
@@ -175,12 +186,9 @@ public class Menu {
     }
 
  public void economyMenu() {
-        //Summera intäkter
         System.out.println("Ekonomi");
      rental.sumRentalsList();
     }
 
 public void clearingScan(Scanner scan){ scan.nextLine();}
 }
-
-

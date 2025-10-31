@@ -6,15 +6,15 @@ import REVENT.enity.Member;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Rental extends RentalRegistry {
-    // hanterar hyrestid och priser och kopplar ihop item och member.
+    // hanterar hyrestid och priser och kopplar ihop item och member. Flytta alla metoder till RentalService och låt denna klass bara skapa Rentalobjekt.
     private Item rentalItem;
     private int rentDays;
     private LocalDate startOfRent;
+    //private boolean returned; ?
 
     public Rental() {
     }
@@ -42,6 +42,7 @@ public class Rental extends RentalRegistry {
     public void setRentalItem(Item rentalItem) {
         this.rentalItem = rentalItem;
     }
+
     public LocalDate getStartOfRent(){
         return startOfRent;
             }
@@ -61,21 +62,18 @@ public class Rental extends RentalRegistry {
     public LocalDate createDateOfRent(String YYYYMMDD) {
         DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate datetOfRent = LocalDate.parse(YYYYMMDD, styleDate);
-        return datetOfRent;
-    }
+        return datetOfRent;    }
 
     //önska antal
     public int rentDaysChoice(Scanner scan) {
         System.out.println("Hur många dagar önskas hyra?");
         int days = scan.nextInt();
-        return days;
-    }
+        return days;    }
 
     // byt antal
     public void changeRentDays(Member member, int x) {
         rentalList.get(member).setRentDays(x);
     }
-
     //visa valt antal
     public int rentalCountDays(Member member) {
         return rentalList.get(member).rentDays;
@@ -119,7 +117,6 @@ public class Rental extends RentalRegistry {
     public void countActualDays(String stopDate, Member member){
         LocalDate stopRent = createDateOfRent(stopDate); // hämta in datum för reel retur
         LocalDate theStartOfRent = rentalList.get(member).getStartOfRent(); // satt sedan innan
-        
 
         // ta localdate start jämför mot localdate avsluta. utfallet ändrar attribut Rentdays
     }
@@ -133,7 +130,7 @@ public class Rental extends RentalRegistry {
 //Priceing
 // Kalla på rentalobjeketet. get dayprice och get.days.
 // Eller ska man ta in objektet som inparameter och göra om i metodern?
-public double priceDay(double dayPrice,int days) {
+public double priceDay(double dayPrice,int days) {// Byt namn på metod
     //priset i item gånger days från renalitem = totaltpris.
     if(30>= days){ int month =0;
         for(int i=0,j=30;i< days;i++,j++){
@@ -142,7 +139,6 @@ public double priceDay(double dayPrice,int days) {
         priceMonth(dayPrice,month);
     }
     return dayPrice * days;
-
 }
  public double priceMonth(double dayPrice,int months) {
      return (months*30)*dayPrice / 2; // om de ksa bli uskrift av denna kör printf(%.f2)

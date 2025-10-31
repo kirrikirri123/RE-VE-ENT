@@ -10,7 +10,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class RentalService extends Inventory {
-    //hanterar Item-funktioner kopplade till uthyrning.
+    //private Inventory inventory;
+    //public Inventory(inventory){
+    // this.inventory = inventory;}
+
+    //hanterar Item-funktioner kopplade till uthyrning. Flytta alla rentalmetoder hit.
+
 
     public void addItemToList(Item item) {
         getItemsList().add(item);

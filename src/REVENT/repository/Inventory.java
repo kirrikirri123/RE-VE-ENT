@@ -16,8 +16,7 @@ public class Inventory {
         return itemsList;
     }
 
-
-
-
-
+    public void setItemsList(List<Item> itemsList) {
+        this.itemsList = itemsList;
+    }
 }

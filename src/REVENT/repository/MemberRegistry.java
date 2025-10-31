@@ -14,6 +14,9 @@ public MemberRegistry(){}
         return memberRegistryList;
     }
 
+    public void setMemberRegistryList(Set<Member> memberRegistryList) {
+        this.memberRegistryList = memberRegistryList;
+    }
 }
 
 
