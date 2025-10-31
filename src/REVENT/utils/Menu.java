@@ -153,13 +153,14 @@ public class Menu {
             memberService.searchInfo();
             String rentalitemReturn = scan.nextLine();
             Member returningMember =memberService.searchMemberByNameOrIdReturnMember(rentalitemReturn);
-            String rentalitemName = rental.returnRentalitemName(returningMember);
+            String rentalitemName = rental.returnRentalItemName(returningMember);
             rental.chooseDateInfo("Åter ");
             String userReturnRentalItem = scan.nextLine();
             String dateStopRent =rental.userChooseDate(userReturnRentalItem);
             System.out.println("Granska återlämning: " + dateStopRent + " återlämnade " + returningMember.getName() + " produkten " + rentalitemName + " ?  JA /NEJ " );
             String userValidationReturn = scan.nextLine();
             if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!"); }
+
             //Lägg till nått i Medlemmenslista?  och betlaning.
                 // Räkna ut och meddela kostnaden.
              break;

@@ -42,6 +42,9 @@ public class Rental extends RentalRegistry {
     public void setRentalItem(Item rentalItem) {
         this.rentalItem = rentalItem;
     }
+    public LocalDate getStartOfRent(){
+        return startOfRent;
+            }
 //_____________________________________________________________________________________
 
     public Rental newRental(Item rentalItem, int rentDays, String startOfRent) { // Valfritt datum skrivet YYYYMMDD!
@@ -81,19 +84,20 @@ public class Rental extends RentalRegistry {
     public double returnRentalDayPrice(Member member) {
         return rentalList.get(member).rentalItem.getDayPrice();
     }
-     public String returnRentalitemName(Member member){
-         String rentalitemName = null;
-         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
-             if (entry.getKey().equals(member)) {
-                 rentalitemName = entry.getValue().rentalItem.getName();
-             }} return rentalitemName;}
+
+    public String returnRentalItemName(Member member){
+        return rentalList.get(member).rentalItem.getName();
+    }
+
+    public Rental returnsRentalObject(Member member){
+        return rentalList.get(member);
+        }
 
     public void chooseDateInfo(String when){
         System.out.println(when + " vilket datum? Skriv i formatet ÅÅÅÅ-MM-DD.");
     }
     public String userChooseDate(String dateStartString){
          return dateStartString.replace(' ','-');}
-
 
     public void rentalsToList(Member member, Rental rentalItem) {
         rentalList.put(member, rentalItem);
@@ -112,14 +116,18 @@ public class Rental extends RentalRegistry {
         for(Map.Entry<Member,Rental> entry :rentalList.entrySet()) {
             System.out.println(entry.getKey() + " - "+ entry.getValue());}}
 
-    public void countActualDays(){
+    public void countActualDays(String stopDate, Member member){
+        LocalDate stopRent = createDateOfRent(stopDate); // hämta in datum för reel retur
+        LocalDate theStartOfRent = rentalList.get(member).getStartOfRent(); // satt sedan innan
+        
+
         // ta localdate start jämför mot localdate avsluta. utfallet ändrar attribut Rentdays
     }
+
     public void sumRentalsList() {
         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
              {System.out.println(entry.getKey()+ " "+ entry.getValue().rentalItem + ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr.");
              }}}
-
 
 //___________________________________________________________________________
 //Priceing
