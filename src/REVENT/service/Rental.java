@@ -135,12 +135,14 @@ public class Rental extends RentalRegistry {
 
     public void sumRentalsList() {
         System.out.println("Hyrestransaktioner idag: ");
+        double sum=0;
         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
-             {    double price = calculateDay(entry.getValue().rentalItem.getDayPrice(),entry.getValue().rentDays);// Denna metoden funkar dåligt och tar inte in pricepolicy.
-                 System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
+            double price = calculateDay(entry.getValue().rentalItem.getDayPrice(),entry.getValue().rentDays);// Denna metoden funkar dåligt och tar inte in pricepolicy.
+            sum +=price;
+            System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
                      ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays
                      + ". Beräknad intäkt på uthyrningen: "+price+ " kr.");
-             }}}
+             }System.out.println("Totala intäkter på affärer gjorda idag beräknas bli:"+ sum);}
 
 //___________________________________________________________________________
 //Priceing
