@@ -16,8 +16,7 @@ public class Member {
         this.id = id;
         this.name = name;
         this.memberStatus = memberStatus;
-    // vad händer med listan??
-    }
+        }
 
     public String getId() {
         return id;

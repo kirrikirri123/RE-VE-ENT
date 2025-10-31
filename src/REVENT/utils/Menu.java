@@ -1,5 +1,7 @@
 package REVENT.utils;
 
+import REVENT.pricepolicy.PrivateIndividual;
+import REVENT.pricepolicy.Society;
 import REVENT.service.Rental;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
@@ -18,6 +20,9 @@ public class Menu {
     MemberService memberService = new MemberService(); //Skicka in memberRegestry
     RentalService rentalService = new RentalService(); //Skicka in inventory
     Rental rental = new Rental(); //Skicka in rentalRegestry
+    PrivateIndividual privateIndividual = new PrivateIndividual();
+    Society society = new Society();
+
 
     public void startMenuChoice() {
         System.out.println(
@@ -77,7 +82,7 @@ public class Menu {
                 System.out.println("Ny medlem. Ange personnummer och för och efternamn separerat med mellanslag.");
                 String memberId = scan.next();
                 String memberFname = scan.next() + " ";
-                String memberLname = scan.next(); // blir begränsande i stavningen. Många möjligheter till fel alt om en person har flera förnamn/efternamn.. Ändra till nextLine?
+                String memberLname = scan.next();
                 clearingScan(scan);
                 memberService.newMember(memberId, memberFname + memberLname, "Privat");
                 System.out.println("Medlem skapad.");
@@ -138,7 +143,7 @@ public class Menu {
                 Member choosenRentMember =  memberService.searchMemberByNameOrIdReturnMember(userMemberInput);
                 rentalService.searchProd();
                 String userProdRental = scan.nextLine();
-                Item choosenRentItem= rentalService.searchItemByNameReturnItem(userProdRental); // hur ska man rädda upp om det blir fel här?
+                Item choosenRentItem= rentalService.searchItemByNameReturnItem(userProdRental); // Stora möjligheter till Exeptions.
                 int indexOfProd = rentalService.searchItemGetListIndex(userProdRental);
                 int rentDayInput = rental.rentDaysChoice(scan);
                 clearingScan(scan);
@@ -151,7 +156,7 @@ public class Menu {
                 if(validateChoice.equalsIgnoreCase("J")) {
                 Rental newRentalItem = rental.newRental(rentalService.getItemsList().get(indexOfProd),rentDayInput,dateStartRent);
                 rental.rentalsToList(choosenRentMember,newRentalItem);
-                System.out.println("Bokat!");
+                System.out.println("Bokat!"); // Lägg till planerat returdatum ?
                 }else{System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
                 break;
             case "A" : System.out.println("Avsluta uthyrning");
@@ -165,15 +170,18 @@ public class Menu {
             String dateStopRent =rental.userChooseDate(userReturnRentalItem);
             System.out.println("Granska återlämning: " + dateStopRent + " återlämnade " + returningMember.getName() + " produkten " + rentalitemName + " ?  JA /NEJ " );
             String userValidationReturn = scan.nextLine();
-            if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!"); }
-
-            //Lägg till nått i Medlemenslista?  och betalning.
-
-             // Räkna ut och meddela kostnaden.
+            if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!");
+            rental.getRentalList().get(returningMember).setReturned(true); } // uppdaterar alla listor.
+            // Räkna ut och meddela kostnaden.
             double rentalItemDayprice = rental.returnRentalDayPrice(returningMember);
             int rentalItemDaysRented = rental.rentalCountDays(returningMember);
-            double totalBasePrice = rental.priceDay(rentalItemDayprice, rentalItemDaysRented);
-            System.out.println("Du hyrde i "+ rentalItemDaysRented + " dagar. Totalkostnaden: "+ totalBasePrice+ "kr.");
+            double totalBasePrice = rental.calculateDay(rentalItemDayprice, rentalItemDaysRented);
+           double totalPrice = 0;
+            if(returningMember.getMemberStatus().equals("private")){
+                 totalPrice = privateIndividual.discount(totalBasePrice);
+            }else{ totalPrice = society.discount(totalBasePrice); }
+            System.out.println("Du hyrde i "+ rentalItemDaysRented + " dagar. Totalkostnaden: "+ totalPrice + "kr.");
+
              break;
             case "H" : System.out.println("Generell uthyrningshistorik");
             rental.printRentalsList();

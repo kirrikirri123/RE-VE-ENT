@@ -14,7 +14,7 @@ public class Rental extends RentalRegistry {
     private Item rentalItem;
     private int rentDays;
     private LocalDate startOfRent;
-    //private boolean returned; ?
+    private boolean returned;
 
     public Rental() {
     }
@@ -23,15 +23,17 @@ public class Rental extends RentalRegistry {
         this.rentalItem = rentalItem;
         this.rentDays = rentDays;
         this.startOfRent = createDateOfRent(startOfRent);
+        this.returned = false;
     }
 
     public Rental(Item rentalItem, int rentDays) {
         this.rentalItem = rentalItem;
         this.rentDays = rentDays;
         this.startOfRent = LocalDate.now();
+        this.returned = false;
     }
 
-    public int getRentDays() {
+    public int getRentDays(){
         return rentDays;
     }
 
@@ -43,10 +45,20 @@ public class Rental extends RentalRegistry {
         this.rentalItem = rentalItem;
     }
 
+    public Item getRentalItem() {
+        return rentalItem;
+    }
     public LocalDate getStartOfRent(){
         return startOfRent;
             }
-//_____________________________________________________________________________________
+    public void setReturned(boolean returned){
+        this.returned= returned;
+    }
+    public boolean isReturned(){
+        return returned;
+    }
+
+    //_____________________________________________________________________________________
 
     public Rental newRental(Item rentalItem, int rentDays, String startOfRent) { // Valfritt datum skrivet YYYYMMDD!
         Rental rental = new Rental(rentalItem, rentDays, startOfRent);
@@ -122,23 +134,26 @@ public class Rental extends RentalRegistry {
     }
 
     public void sumRentalsList() {
+        System.out.println("Hyrestransaktioner idag: ");
         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
-             {System.out.println(entry.getKey()+ " "+ entry.getValue().rentalItem + ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr.");
+             {System.out.println(entry.getKey()+ " "+ entry.getValue().rentalItem.getName() +
+                     ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays);
              }}}
 
 //___________________________________________________________________________
 //Priceing
-// Kalla på rentalobjeketet. get dayprice och get.days.
+
 // Eller ska man ta in objektet som inparameter och göra om i metodern?
-public double priceDay(double dayPrice,int days) {// Byt namn på metod
-    //priset i item gånger days från renalitem = totaltpris.
+public double calculateDay(double dayPrice,int days) {
+    double price = dayPrice * days;
     if(30>= days){ int month =0;
         for(int i=0,j=30;i< days;i++,j++){
             if(j==30||j==60||j==90||j==120||j==150|| j==180){
-                month++;}}
-        priceMonth(dayPrice,month);
-    }
-    return dayPrice * days;
+                month++;}
+            price = priceMonth(dayPrice,month);
+        }
+        }
+        return price;
 }
  public double priceMonth(double dayPrice,int months) {
      return (months*30)*dayPrice / 2; // om de ksa bli uskrift av denna kör printf(%.f2)
@@ -154,7 +169,7 @@ public double priceDay(double dayPrice,int days) {// Byt namn på metod
 
     @Override
     public String toString() {
-        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent;
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ?: "+ this.returned;
 
     }
 }
