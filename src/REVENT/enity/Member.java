@@ -40,7 +40,7 @@ public class Member {
         return historyMember;
     }
     public void setHistoryMember(List<Rental> historyMember) {
-        this.historyMember = historyMember; // Denna går väll inte använda??
+        this.historyMember = historyMember; // Går denna använda?
         }
 @Override
     public String toString() {

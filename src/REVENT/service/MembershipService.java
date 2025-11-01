@@ -5,7 +5,7 @@ import REVENT.repository.MemberRegistry;
 
 import java.util.*;
 
-public class MemberService extends MemberRegistry {
+public class MembershipService extends MemberRegistry {
 // Hanterar memberfunktioner. Medlemsrabatter? Ta isf in PI och S objekten hit istället?
     //private MemberRegestry = memberregestry;
     //public MembergRegestry(memberregestry){
@@ -96,7 +96,7 @@ public class MemberService extends MemberRegistry {
             String memberStatus = scan.nextLine();
             updateMemberStatus(m,memberStatus);
             System.out.println("Medlem uppdaterad!");
-        }else {System.out.println("Backar till huvudmeny");}
+        }else {System.out.println("Kliver ur. Gör ett nytt val!");}
             }}
 
      public void updateMemberName(Member member,String newName){
