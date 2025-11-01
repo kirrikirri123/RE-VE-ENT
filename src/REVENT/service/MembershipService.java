@@ -5,7 +5,7 @@ import REVENT.repository.MemberRegistry;
 
 import java.util.*;
 
-public class MemberService extends MemberRegistry {
+public class MembershipService extends MemberRegistry {
 // Hanterar memberfunktioner. Medlemsrabatter? Ta isf in PI och S objekten hit istället?
     //private MemberRegestry = memberregestry;
     //public MembergRegestry(memberregestry){

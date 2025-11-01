@@ -5,7 +5,7 @@ import REVENT.pricepolicy.Society;
 import REVENT.service.Rental;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
-import REVENT.service.MemberService;
+import REVENT.service.MembershipService;
 import REVENT.service.RentalService;
 
 
@@ -18,7 +18,7 @@ public class Menu {
     // MemberRegestry memberRegestry = new memberRegestry();
     //RentalRegestry rentalRegestry = new rentalRegestry();
 
-    MemberService memberService = new MemberService(); //Skicka in memberRegestry  Även PI och S objektet?
+    MembershipService memberService = new MembershipService(); //Skicka in memberRegestry  Även PI och S objektet?
     RentalService rentalService = new RentalService(); //Skicka in inventory och rentalRegestry
     Rental rental = new Rental();
     PrivateIndividual privateIndividual = new PrivateIndividual();
