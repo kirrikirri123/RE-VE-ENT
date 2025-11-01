@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class Rental extends RentalRegistry {
     // hanterar hyrestid och priser och kopplar ihop item och member. Flytta alla metoder till RentalService och låt denna klass bara skapa Rentalobjekt.
+    // PRoffstipset var att lägga ett member objekt i fält också. Varför gör jag inte det??
     private Item rentalItem;
     private int rentDays;
     private LocalDate startOfRent;
@@ -19,7 +20,7 @@ public class Rental extends RentalRegistry {
     public Rental() {
     }
 
-    public Rental(Item rentalItem, int rentDays, String startOfRent) { // metoden behöver ta in en String för att kunna skapa en Localdate.
+    public Rental(Item rentalItem, int rentDays, String startOfRent) {
         this.rentalItem = rentalItem;
         this.rentDays = rentDays;
         this.startOfRent = createDateOfRent(startOfRent);
@@ -126,50 +127,37 @@ public class Rental extends RentalRegistry {
         for(Map.Entry<Member,Rental> entry :rentalList.entrySet()) {
             System.out.println(entry.getKey() + " - "+ entry.getValue());}}
 
-    public void countActualDays(String stopDate, Member member){
+    public void countActualDays(String stopDate, Member member){ // här finns risk att det är ett förstort tal i long när de konverteras till int.
         LocalDate stopRent = createDateOfRent(stopDate); // hämta in datum för reel retur
         LocalDate theStartOfRent = rentalList.get(member).getStartOfRent(); // satt sedan innan
-
-        // ta localdate start jämför mot localdate avsluta. utfallet ändrar attribut Rentdays
-    } //FUNGERAR EJ
-
+        long actualDaysLong = stopRent.toEpochDay() - theStartOfRent.toEpochDay();
+        int actualDays =(int) actualDaysLong;
+        changeRentDays(member,actualDays);
+         }
     public void sumRentalsList() {
         System.out.println("Hyrestransaktioner idag: ");
+        double sum=0;
         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
-             {System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
-                     ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays);
-             }}}
+            double price = calculateDay(entry.getValue().rentalItem.getDayPrice(),entry.getValue().rentDays);//OBS! Tar inte in pricepolicy.
+            sum +=price;
+            System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
+                     ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays
+                     + ". Beräknad intäkt på uthyrningen bortsett från ev.rabatter: "+price+ " kr.");
+             }System.out.println("Totala intäkter på affärer gjorda idag beräknas bli: "+ sum + "kr ex. moms.");}
 
 //___________________________________________________________________________
-//Priceing
-
-// Eller ska man ta in objektet som inparameter och göra om i metodern?
+//Pricing
 public double calculateDay(double dayPrice,int days) {
     double price = dayPrice * days;
-    if(days>=30){ int month =0;
-        for(int i=0,j=30;i< days;i++,j++){
-            if(j==30||j==60||j==90||j==120||j==150|| j==180){
-                month++;}
-            price = priceMonth(dayPrice,month);
-        }
-        }
+    if(days>=30){ price = priceMonth(dayPrice,days);}
         return price;
 }
- public double priceMonth(double dayPrice,int months) {
-     return (months*30)*dayPrice / 2; // om de ksa bli uskrift av denna kör printf(%.f2)
-
+ public double priceMonth(double dayPrice,double days) {
+        return (days/30)*((dayPrice*30)*0.7);
  }
-    public int discountFebruary() {
-        int feb = 0;
-        for (int i = 0; i <= 12; i++) {
-            if (i == 2) {
-                feb -= 2; }
-        }        return feb;}
-
-
     @Override
     public String toString() {
-        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ?: "+ this.returned;
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ? "+ this.returned;
 
     }
 }

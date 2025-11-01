@@ -6,8 +6,10 @@ import REVENT.repository.MemberRegistry;
 import java.util.*;
 
 public class MemberService extends MemberRegistry {
-// Hanterar memberfunktioner samt medlemsrabatter?
-
+// Hanterar memberfunktioner. Medlemsrabatter? Ta isf in PI och S objekten hit istället?
+    //private MemberRegestry = memberregestry;
+    //public MembergRegestry(memberregestry){
+    // this.memberregestry = memberregestry;}
 
     public void newMember(String id, String name, String memberStatus){
         Member member = new Member(id,name,memberStatus);
@@ -16,7 +18,6 @@ public class MemberService extends MemberRegistry {
     public void addMemberList(Member member) {
         getMemberRegistryList().add(member);
     }
-
     public void searchInfo(){
         System.out.println("Vilken medlem? Ange namn eller personnummer/organistationsnummer.");
     }
@@ -46,7 +47,9 @@ public class MemberService extends MemberRegistry {
                 // skriv er ut index i templistan så vi kan hitta det igen sen vid val??
             }else if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning.");}
              else { for(Member member : foundMatches){
-               System.out.println("Hittade "+member.getName()+" med ID: "+ member.getId());}
+                 String memberStatusPrint = null;
+                 if(member.getMemberStatus().equals("Privat")){memberStatusPrint = "privatkund."; } else if(member.getMemberStatus().equals("Förening")){ memberStatusPrint ="föreningskund.";}
+               System.out.println("Hittade "+member.getName()+" med ID: "+ member.getId() + ". Är "+ memberStatusPrint);}
             }}
 
     public void removeMember(String nameOrId, Scanner scan){
@@ -74,20 +77,38 @@ public class MemberService extends MemberRegistry {
     }
 
     public void findAndUpdateMember(String nameOrId, Scanner scan){
-        checkListPrintMembersFound(nameOrId); // Blir fel om  man inte hittar nån matchning. Då rullar uskriften vidare.
-        System.out.print("Ska profilen uppdateras?\n Om felaktigt ange X!");
+        List<Member> foundMatches = searchMemberByNameIdReturnList(nameOrId);
+        if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning."); return;}
+        for(Member m : foundMatches)
+        {System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ ".");
+        System.out.println("Ska profilen uppdateras?\n -  Om felaktigt ange X ! -");
         System.out.println("Vad vill du uppdatera? \n Ange : [N] Namn [M] Medlemsstatus");
         String userChoiceChange = scan.nextLine();
         if(userChoiceChange.equalsIgnoreCase("N")) {
             System.out.println("Skriv in den nya namnet:");
             String memberFname = scan.next() + " ";
             String memberLname = scan.next();
-            scan.nextLine(); //cleaningcrew // Lägg in metod som hanterar förändringen !
+            scan.nextLine(); //cleaningcrew
+            updateMemberName(m, memberFname + " " + memberLname);
+            System.out.println("Medlem uppdaterad!");
         }else if (userChoiceChange.equalsIgnoreCase("M")){
             System.out.println( "Om privatperson ange P. Om förening ange F.");
-            String memberStatus = scan.nextLine();// Lägg in metod som hanterar förändringen !
+            String memberStatus = scan.nextLine();
+            updateMemberStatus(m,memberStatus);
+            System.out.println("Medlem uppdaterad!");
         }else {System.out.println("Backar till huvudmeny");}
-            }
+            }}
+
+     public void updateMemberName(Member member,String newName){
+     member.setName(newName); }
+
+    public void updateMemberStatus(Member member, String status) {
+        if (status.equalsIgnoreCase("P")) {
+            member.setMemberStatus("Privat");
+        } else if (status.equalsIgnoreCase("F")) {
+            member.setMemberStatus("Förening");
+        }
+    }
 
     public void defaultList() { // För testning.
         newMember("112", "Pelle Polis","Privat");
