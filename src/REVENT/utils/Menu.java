@@ -82,7 +82,7 @@ public class Menu {
         String memberActionChoice = scan.nextLine();
          switch (memberActionChoice.toUpperCase()) {
             case "NP":
-                System.out.println("NY MEDLEM - privatperson. Ange personnummer och för och efternamn separerat med mellanslag.");
+                System.out.println("NY MEDLEM - privatperson.\n Ange först personnummer och för och efternamn separerat med mellanslag.");
                 String memberId = scan.next();
                 String memberFname = scan.next() + " ";
                 String memberLname = scan.next();
@@ -91,7 +91,7 @@ public class Menu {
                 System.out.println("Medlem skapad.");
                 break;
             case "NF":
-                System.out.println("NY MEDLEM - Förening. Ange först organisationsnummer och sedan namn på föreningen. Separerat med enter-slag.");
+                System.out.println("NY MEDLEM - Förening.\n Ange först organisationsnummer och sedan namn på föreningen. Separerat med enter-slag.");
                 String socMemberId = scan.nextLine();
                 String socMemberName = scan.nextLine();
                 memberService.newMember(socMemberId, socMemberName, "Förening");
@@ -117,21 +117,17 @@ public class Menu {
                     memberService.findAndUpdateMember(userUpdate,scan);
                     }
                 break;
-            case "H": System.out.println("- MEDLEMSHISTORIK -");
+            case "H": System.out.println("- MEDLEMSHISTORIK -"); // dold i menyval av säkerhetskäl. Bara superadmins vet.
                 memberService.searchInfo();
                 String userHistory = scan.nextLine();
                  memberService.getMemberHistory(memberService.searchMemberByNameOrIdReturnMember(userHistory));
                 break;
-            case "E": System.out.println("Test month"); double thirty  =rental.calculateDay(450,30);
-                double forty  =rental.calculateDay(450,40);
-                double fifty  =rental.calculateDay(450,50);
-                System.out.println(". 30 dagar = " + thirty + ". 40 dagar = "+ forty + ". 50 dagar = " + fifty);
+            case "E":
                 //Test Case
-                
-                break;
+                 break;
             case "B":
                 System.out.println("Backar"); subMeny =false; break;
-            case "A":
+            case "A": System.out.println("- MEDLEMSLISTA -");
                memberService.printMemberReg();
                break;
             default:
@@ -183,8 +179,8 @@ public class Menu {
             System.out.println("Granska återlämning: " + dateStopRent + " återlämnade " + returningMember.getName() + " produkten " + rentalitemName + " ?  JA /NEJ " );
             String userValidationReturn = scan.nextLine();
             if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!");
-            rental.getRentalList().get(returningMember).setReturned(true); } // uppdaterar alla listor.
-            // Räkna ut och meddela kostnaden.
+            rental.getRentalList().get(returningMember).setReturned(true);
+            rental.countActualDays(dateStopRent,returningMember);}
             double rentalItemDayprice = rental.returnRentalDayPrice(returningMember);
             int rentalItemDaysRented = rental.rentalCountDays(returningMember);
             double totalBasePrice = rental.calculateDay(rentalItemDayprice, rentalItemDaysRented);

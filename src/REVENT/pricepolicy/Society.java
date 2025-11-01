@@ -5,7 +5,7 @@ public class Society implements PricePolicy{
 
     @Override
     public String priceVAT(double x) {
-        return "Totalkostnad: "+ x + "kr.\nexkl. moms.";
+        return String.format("Totalkostnad: %.2f kr.\nexkl. moms.",x);
          }
 
     @Override

@@ -47,7 +47,9 @@ public class MemberService extends MemberRegistry {
                 // skriv er ut index i templistan så vi kan hitta det igen sen vid val??
             }else if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning.");}
              else { for(Member member : foundMatches){
-               System.out.println("Hittade "+member.getName()+" med ID: "+ member.getId());}
+                 String memberStatusPrint = null;
+                 if(member.getMemberStatus().equals("Privat")){memberStatusPrint = "privatkund."; } else if(member.getMemberStatus().equals("Förening")){ memberStatusPrint ="föreningskund.";}
+               System.out.println("Hittade "+member.getName()+" med ID: "+ member.getId() + ". Är "+ memberStatusPrint);}
             }}
 
     public void removeMember(String nameOrId, Scanner scan){
@@ -96,7 +98,7 @@ public class MemberService extends MemberRegistry {
             System.out.println("Medlem uppdaterad!");
         }else {System.out.println("Backar till huvudmeny");}
             }}
-    
+
      public void updateMemberName(Member member,String newName){
      member.setName(newName); }
 

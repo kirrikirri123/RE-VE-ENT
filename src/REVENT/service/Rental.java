@@ -127,22 +127,22 @@ public class Rental extends RentalRegistry {
         for(Map.Entry<Member,Rental> entry :rentalList.entrySet()) {
             System.out.println(entry.getKey() + " - "+ entry.getValue());}}
 
-    public void countActualDays(String stopDate, Member member){
+    public void countActualDays(String stopDate, Member member){ // här finns risk att det är ett förstort tal i long när de konverteras till int.
         LocalDate stopRent = createDateOfRent(stopDate); // hämta in datum för reel retur
         LocalDate theStartOfRent = rentalList.get(member).getStartOfRent(); // satt sedan innan
-
-        // ta localdate start jämför mot localdate avsluta. utfallet ändrar attribut Rentdays
-    } //FUNGERAR EJ
-
+        long actualDaysLong = stopRent.toEpochDay() - theStartOfRent.toEpochDay();
+        int actualDays =(int) actualDaysLong;
+        changeRentDays(member,actualDays);
+         }
     public void sumRentalsList() {
         System.out.println("Hyrestransaktioner idag: ");
         double sum=0;
         for (Map.Entry<Member, Rental> entry : rentalList.entrySet()) {
-            double price = calculateDay(entry.getValue().rentalItem.getDayPrice(),entry.getValue().rentDays);// Denna metoden funkar dåligt och tar inte in pricepolicy.
+            double price = calculateDay(entry.getValue().rentalItem.getDayPrice(),entry.getValue().rentDays);//OBS! Tar inte in pricepolicy.
             sum +=price;
             System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
                      ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays
-                     + ". Beräknad intäkt på uthyrningen: "+price+ " kr.");
+                     + ". Beräknad intäkt på uthyrningen bortsett från ev.rabatter: "+price+ " kr.");
              }System.out.println("Totala intäkter på affärer gjorda idag beräknas bli: "+ sum + "kr ex. moms.");}
 
 //___________________________________________________________________________
@@ -157,7 +157,7 @@ public double calculateDay(double dayPrice,int days) {
  }
     @Override
     public String toString() {
-        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ? "+ this.returned;
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ? "+ this.returned;
 
     }
 }
