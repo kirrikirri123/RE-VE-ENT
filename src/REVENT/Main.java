@@ -10,7 +10,7 @@ public class Main {
         menu.defaultListForTest();
         while (isRunning) {
            menu.startMenuChoice();
-            String userChoice = scan.nextLine();
+           String userChoice = scan.nextLine();
             switch (userChoice) {
                 case "1": menu.memberMenu(scan); break;
                 case "2": menu.productMenu(scan); break;

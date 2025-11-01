@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class Rental extends RentalRegistry {
     // hanterar hyrestid och priser och kopplar ihop item och member. Flytta alla metoder till RentalService och låt denna klass bara skapa Rentalobjekt.
+    // PRoffstipset var att lägga ett member objekt i fält också. Varför gör jag inte det??
     private Item rentalItem;
     private int rentDays;
     private LocalDate startOfRent;
@@ -142,38 +143,21 @@ public class Rental extends RentalRegistry {
             System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
                      ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays
                      + ". Beräknad intäkt på uthyrningen: "+price+ " kr.");
-             }System.out.println("Totala intäkter på affärer gjorda idag beräknas bli:"+ sum);}
+             }System.out.println("Totala intäkter på affärer gjorda idag beräknas bli: "+ sum + "kr ex. moms.");}
 
 //___________________________________________________________________________
-//Priceing
-
-// Eller ska man ta in objektet som inparameter och göra om i metodern?
-public double calculateDay(double dayPrice,int days) { // Hur göra med månadspris ? Efter 2 månader köra på ett månads pris per påbörjad månad?
+//Pricing
+public double calculateDay(double dayPrice,int days) {
     double price = dayPrice * days;
-    if(days>=30){ int month =0;
-        for(int i=0,j=30;i< days-30;i++,j++){
-            if(j==30||j==60||j==90||j==120||j==150|| j==180){
-                month++;}
-            price = priceMonth(dayPrice,month);
-        }
-        }
+    if(days>=30){ price = priceMonth(dayPrice,days);}
         return price;
 }
- public double priceMonth(double dayPrice,int months) { // Denna räknar alltid ut halva priset per månad osvasett om det är 31 eller 59 dagar.. se
-     return (months*30)*dayPrice / 2; // om de ksa bli uskrift av denna kör printf(%.f2)
-
+ public double priceMonth(double dayPrice,double days) {
+        return (days/30)*((dayPrice*30)*0.7);
  }
-    public int discountFebruary() {
-        int feb = 0;
-        for (int i = 0; i <= 12; i++) {
-            if (i == 2) {
-                feb -= 2; }
-        }        return feb;}
-
-
     @Override
     public String toString() {
-        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ?: "+ this.returned;
+        return " Hyresobjekt: " + this.rentalItem.getName() + ". Planerad hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ? "+ this.returned;
 
     }
 }

@@ -6,8 +6,10 @@ import REVENT.repository.MemberRegistry;
 import java.util.*;
 
 public class MemberService extends MemberRegistry {
-// Hanterar memberfunktioner samt medlemsrabatter?
-
+// Hanterar memberfunktioner. Medlemsrabatter? Ta isf in PI och S objekten hit istället?
+    //private MemberRegestry = memberregestry;
+    //public MembergRegestry(memberregestry){
+    // this.memberregestry = memberregestry;}
 
     public void newMember(String id, String name, String memberStatus){
         Member member = new Member(id,name,memberStatus);
@@ -16,7 +18,6 @@ public class MemberService extends MemberRegistry {
     public void addMemberList(Member member) {
         getMemberRegistryList().add(member);
     }
-
     public void searchInfo(){
         System.out.println("Vilken medlem? Ange namn eller personnummer/organistationsnummer.");
     }
@@ -75,7 +76,7 @@ public class MemberService extends MemberRegistry {
 
     public void findAndUpdateMember(String nameOrId, Scanner scan){
         checkListPrintMembersFound(nameOrId); // Blir fel om  man inte hittar nån matchning. Då rullar uskriften vidare.
-        System.out.print("Ska profilen uppdateras?\n Om felaktigt ange X!");
+        System.out.println("Ska profilen uppdateras?\n -  Om felaktigt ange X ! -");
         System.out.println("Vad vill du uppdatera? \n Ange : [N] Namn [M] Medlemsstatus");
         String userChoiceChange = scan.nextLine();
         if(userChoiceChange.equalsIgnoreCase("N")) {

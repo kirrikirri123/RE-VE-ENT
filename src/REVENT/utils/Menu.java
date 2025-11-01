@@ -18,20 +18,19 @@ public class Menu {
     // MemberRegestry memberRegestry = new memberRegestry();
     //RentalRegestry rentalRegestry = new rentalRegestry();
 
-    MemberService memberService = new MemberService(); //Skicka in memberRegestry
-    RentalService rentalService = new RentalService(); //Skicka in inventory
-    Rental rental = new Rental(); //Skicka in rentalRegestry
+    MemberService memberService = new MemberService(); //Skicka in memberRegestry  Även PI och S objektet?
+    RentalService rentalService = new RentalService(); //Skicka in inventory och rentalRegestry
+    Rental rental = new Rental();
     PrivateIndividual privateIndividual = new PrivateIndividual();
     Society society = new Society();
-
 
     public void startMenuChoice() {
         System.out.println(
         """
-         RevENTs uthyrning
+         - RevENT UTHYRNING -
         [1] Medlemmar : Skapa ny medlem, gör förändringar i medlemslista.
         [2] Produkter : Se produkter, gör förändringar i produktlista.
-        [3] Uthyrning : Ny uthyrning.
+        [3] Uthyrning : Skapa och avsluta uthyrning.
         [4] Ekomoni : Intäkter.
         [5] Avsluta.
         Skriv siffra sedan enter.""");
@@ -42,7 +41,9 @@ public class Menu {
     }
 
     public void productMenu(Scanner scan) {
-        System.out.println("Produkter");
+        boolean subMeny = true;
+        while(subMeny){
+        System.out.println(" - PRODUKTER -");
         System.out.println(" Gör ett val: \n[V] Visa alla produkter. [D] Dräkter. [H] Hoppborgar. [N] Ny produkt. [X] Ta bort produkt. [B] Backa till Huvudmeny");
         String itemSort = scan.nextLine();
           switch (itemSort.toUpperCase()) {
@@ -67,20 +68,21 @@ public class Menu {
             String userRemove = scan.nextLine();
             rentalService.removeItemFromList(userRemove,scan);
             break;
-            case "B" : System.out.println("Backar");break;
+            case "B" : System.out.println("Backar"); subMeny = false; break;
             default:
                 System.out.println("Något blev fel. V = Alla produkter, D = Dräkter, H= Hoppborgar, S = Sök/ ta bort produkt, B = Bakåt till Huvudmeny.");
                 break;
         }
-    }
+    }}
 
     public void memberMenu(Scanner scan) {
-
-        System.out.println("Medlemmar\n Välj åtgärd: [NP] Ny medlem - Privatperson, [NF] Ny medlem - Förening, [S] Sök medlem, [U] Uppdatera / ta bort befintlig medlem. [H] Historik - medlemsspecifik. [B] Backa till Huvudmeny");
+        boolean subMeny = true;
+        while(subMeny){
+        System.out.println(" - MEDLEMMAR - \n Gör ett val : [NP] Ny medlem - Privatperson, [NF] Ny medlem - Förening, [S] Sök medlem, [U] Uppdatera / ta bort befintlig medlem. [H] Historik - medlemsspecifik. [B] Backa till Huvudmeny");
         String memberActionChoice = scan.nextLine();
          switch (memberActionChoice.toUpperCase()) {
             case "NP":
-                System.out.println("Ny medlem. Ange personnummer och för och efternamn separerat med mellanslag.");
+                System.out.println("NY MEDLEM - privatperson. Ange personnummer och för och efternamn separerat med mellanslag.");
                 String memberId = scan.next();
                 String memberFname = scan.next() + " ";
                 String memberLname = scan.next();
@@ -89,20 +91,20 @@ public class Menu {
                 System.out.println("Medlem skapad.");
                 break;
             case "NF":
-                System.out.println("Ny medlem - Förening. Ange först organisationsnummer och sedan namn på föreningen. Separerat med enter-slag.");
+                System.out.println("NY MEDLEM - Förening. Ange först organisationsnummer och sedan namn på föreningen. Separerat med enter-slag.");
                 String socMemberId = scan.nextLine();
                 String socMemberName = scan.nextLine();
                 memberService.newMember(socMemberId, socMemberName, "Förening");
                 System.out.println("Medlem skapad.");
                 break;
             case "S":
-                System.out.println("Sökning i medlemslistan.");
+                System.out.println("-SÖKNING I MEDLEMSLISTA-");
                 memberService.searchInfo();
                 String userSearch = scan.nextLine();
                 memberService.checkListPrintMembersFound(userSearch);
                 break;
             case "U":
-                System.out.println("Uppdateringar. Vill du ta bort en medlem ur listan helt? Ange X, enter." +
+                System.out.println("- UPPDATERINGAR AV MEDLEM -\n Vill du ta bort en medlem ur listan helt? Ange X, enter." +
                         "\n Önskar du uppdatera befintlig medlemsinfo? Ange U, sedan enter.");
                 String userChangeMem = scan.nextLine();
                 if (userChangeMem.equalsIgnoreCase("X")) {
@@ -115,14 +117,20 @@ public class Menu {
                     memberService.findAndUpdateMember(userUpdate,scan);
                     }
                 break;
-            case "H": System.out.println("Medlemshistorik");
+            case "H": System.out.println("- MEDLEMSHISTORIK -");
                 memberService.searchInfo();
                 String userHistory = scan.nextLine();
                  memberService.getMemberHistory(memberService.searchMemberByNameOrIdReturnMember(userHistory));
                 break;
-            case "E": //Test Case          break;
+            case "E": System.out.println("Test month"); double thirty  =rental.calculateDay(450,30);
+                double forty  =rental.calculateDay(450,40);
+                double fifty  =rental.calculateDay(450,50);
+                System.out.println(". 30 dagar = " + thirty + ". 40 dagar = "+ forty + ". 50 dagar = " + fifty);
+                //Test Case
+                
+                break;
             case "B":
-                System.out.println("Backar");break;
+                System.out.println("Backar"); subMeny =false; break;
             case "A":
                memberService.printMemberReg();
                break;
@@ -130,15 +138,17 @@ public class Menu {
                 System.out.println("Något blev fel. N = Ny medlem. S = Söka medlem. U = Uppdatera medlem. H = Historik. B =  Bakåt till huvudmeny.");
                 break;
         }
-    }
+    }}
 
     public void rentalMenu(Scanner scan) {
-        System.out.println("Uthyrning");
+        boolean subMeny = true;
+        while(subMeny){
+        System.out.println("- UTHYRNING -");
         System.out.println("[N] Ny uthyrning.[A] Avsluta uthyrning. [H] Historik - uthyrningar . [B] Backa till huvudmeny");
         String userRentalChoice = scan.nextLine();
         switch (userRentalChoice.toUpperCase()){
 
-            case "N" : System.out.println("Ny uthyrning.");
+            case "N" : System.out.println("NY UTHYRNING.");
             System.out.println("Vilken kund?\n Om det är en helt ny kund,gå åter till Huvudmenyn och välj Medlemmar på nr.1");
             String userMemberInput = scan.nextLine();
                 Member choosenRentMember =  memberService.searchMemberByNameOrIdReturnMember(userMemberInput);
@@ -161,8 +171,8 @@ public class Menu {
                 System.out.println("Bokat! "+ "Planerat återlämningsdatum: "+ estimatedReturnDate);
                 }else{System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
                 break;
-            case "A" : System.out.println("Avsluta uthyrning");
-            System.out.println("Återlämning av produkt ");
+            case "A" : System.out.println(" - AVSLUTA UTHYRNING -");
+            System.out.println("Återlämning av uthyrd produkt ");
             memberService.searchInfo();
             String rentalitemReturn = scan.nextLine();
             Member returningMember =memberService.searchMemberByNameOrIdReturnMember(rentalitemReturn);
@@ -184,18 +194,18 @@ public class Menu {
             }else{ String totalPrice = society.priceVAT(society.discount(totalBasePrice));
                 System.out.println("Uthyrningen varade i "+ rentalItemDaysRented + " dagar.\n"+ totalPrice);}
              break;
-            case "H" : System.out.println("Generell uthyrningshistorik");
+            case "H" : System.out.println(" - TOTAL UTHYRNINGSHISTORIK - ");
             rental.printRentalsList();
                    break;
-            case "B" : System.out.println("Backar");break;
+            case "B" : System.out.println("Backar"); subMeny= false; break;
             default:
                 System.out.println("Något blev fel. N = Ny utyrning. A = Avsluta uthyrning. H = Historik. B = Bakåt till huvudmeny.");
                  break;
         }
-    }
+    }}
 
  public void economyMenu() {
-        System.out.println("Ekonomi");
+        System.out.println(" - EKONOMI - ");
      rental.sumRentalsList();
     }
 
