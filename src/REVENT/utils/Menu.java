@@ -2,7 +2,9 @@ package REVENT.utils;
 
 import REVENT.pricepolicy.PrivateIndividual;
 import REVENT.pricepolicy.Society;
+import REVENT.repository.Inventory;
 import REVENT.repository.MemberRegistry;
+import REVENT.repository.RentalRegistry;
 import REVENT.service.Rental;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
@@ -14,12 +16,12 @@ import java.util.Scanner;
 
 public class Menu {
     // Lägg in objekt av Listorna här så objekt nedan kan ta in dem och användas den vägen! - Mer rätt!
-    // Inventory inventory = new Inventory();
+    Inventory inventory = new Inventory();
     MemberRegistry memberRegistry = new MemberRegistry();
-    //RentalRegistry rentalRegistry = new RentalRegistry();
+    RentalRegistry rentalRegistry = new RentalRegistry();
 
     MembershipService memberService = new MembershipService(memberRegistry); //Även PI och S objektet?
-    RentalService rentalService = new RentalService(); //Skicka in inventory och rentalRegestry
+    RentalService rentalService = new RentalService(inventory); // lägga rentalreg här också?
     Rental rental = new Rental();
     PrivateIndividual privateIndividual = new PrivateIndividual();
     Society society = new Society();
@@ -163,7 +165,7 @@ public class Menu {
                 System.out.println("Bekräfta med J för att boka. Annars X.");
                 String validateChoice = scan.nextLine();
                 if(validateChoice.startsWith("J")) {
-                Rental newRentalItem = rental.newRental(rentalService.getItemsList().get(indexOfProd),rentDayInput,dateStartRent);
+                Rental newRentalItem = rental.newRental(rentalService.getInventory().getItemsList().get(indexOfProd),rentDayInput,dateStartRent);
                 rental.rentalsToList(choosenRentMember,newRentalItem);
                 LocalDate estimatedReturnDate = rental.createDateOfRent(dateStartRent).plusDays(rentDayInput);
                 System.out.println("Bokat! "+ "Planerat återlämningsdatum: "+ estimatedReturnDate);

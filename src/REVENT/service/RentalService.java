@@ -9,16 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class RentalService extends Inventory {
-    //private Inventory inventory;
-    //public Inventory(inventory){
-    // this.inventory = inventory;}
-
+public class RentalService {
     //hanterar Item-funktioner kopplade till uthyrning. Flytta alla rentalmetoder hit!
+    private Inventory inventory;
 
+    public RentalService(Inventory inventory){
+     this.inventory = inventory;}
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
 
     public void addItemToList(Item item) {
-        getItemsList().add(item);
+        getInventory().getItemsList().add(item);
     }
 
     public void searchProd() {
@@ -27,7 +33,7 @@ public class RentalService extends Inventory {
 
     public List<Item> searchItemByName(String prod) {
         List<Item> foundI = new ArrayList<>();
-        for (Item i : itemsList) {
+        for (Item i : getInventory().getItemsList()) {
             if (i.getName().equalsIgnoreCase(prod)) {
                 foundI.add(i);} }
         return foundI;
@@ -35,7 +41,7 @@ public class RentalService extends Inventory {
 
     public Item searchItemByNameReturnItem(String prod) {
         Item foundItem = null;
-        for (Item it : itemsList) {
+        for (Item it : getInventory().getItemsList()) {
             if (it.getName().equalsIgnoreCase(prod)) {
                 foundItem = it;
             }
@@ -57,8 +63,8 @@ public class RentalService extends Inventory {
 
     public int searchItemGetListIndex(String prod){
         int indexItem=0;
-        for(int i = 0; i < itemsList.size();i++){
-            if(itemsList.get(i).getName().equalsIgnoreCase(prod)){
+        for(int i = 0; i < getInventory().getItemsList().size();i++){
+            if(getInventory().getItemsList().get(i).getName().equalsIgnoreCase(prod)){
                 indexItem = i;}}
            return indexItem; }
 
@@ -70,7 +76,7 @@ public class RentalService extends Inventory {
                         " Ska produkten tas bort från listan? JA / NEJ");
                 String removeUser = scan.nextLine();
                 if (removeUser.equalsIgnoreCase("ja")){
-        itemsList.removeAll(removeI);
+                    getInventory().getItemsList().removeAll(removeI);
         System.out.println(" Produkt borttagen.");}
         System.out.println(" Se aktuell lista:");printItemList();
     }}
@@ -86,14 +92,14 @@ public class RentalService extends Inventory {
     }
 
     public void printItemList(){
-        if(itemsList.isEmpty()){System.out.println("Inga produkter att visa.");}
-        for(Item item:itemsList){
+        if(getInventory().getItemsList().isEmpty()){System.out.println("Inga produkter att visa.");}
+        for(Item item:getInventory().getItemsList()){
             System.out.println(item);
         }
     }
 
     public void printItemGroup(String attribut){
-        for(Item it : itemsList) {
+        for(Item it : getInventory().getItemsList()) {
             if (it.getDescription().contains(attribut)){
                 System.out.println(it);}}
             }
