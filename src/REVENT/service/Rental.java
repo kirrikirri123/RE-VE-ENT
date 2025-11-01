@@ -141,7 +141,7 @@ public class Rental extends RentalRegistry {
             double price = calculateDay(entry.getValue().rentalItem.getDayPrice(),entry.getValue().rentDays);//OBS! Tar inte in pricepolicy.
             sum +=price;
             System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().rentalItem.getName() +
-                     ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Planerad hyrestid i dagar: "+ entry.getValue().rentDays
+                     ". Dagspris: " + entry.getValue().rentalItem.getDayPrice()+ "kr. Hyrestid i dagar: "+ entry.getValue().rentDays
                      + ". Beräknad intäkt på uthyrningen bortsett från ev.rabatter: "+price+ " kr.");
              }System.out.println("Totala intäkter på affärer gjorda idag beräknas bli: "+ sum + "kr ex. moms.");}
 

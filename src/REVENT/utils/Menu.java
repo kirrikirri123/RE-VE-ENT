@@ -48,12 +48,15 @@ public class Menu {
         String itemSort = scan.nextLine();
           switch (itemSort.toUpperCase()) {
             case "V" : rentalService.printItemList();
+            System.out.println();
                  break;
             case "D" : System.out.println("Dräkter");
                 rentalService.printItemGroup("dräkt");
+                System.out.println();
                 break;
             case "H" : System.out.println("Hoppborgar");
                 rentalService.printItemGroup("hopp");
+                System.out.println();
                  break;
             case "N" : System.out.println("Ny produkt\n Under uppbyggnad");
 
@@ -190,7 +193,7 @@ public class Menu {
             }else{ String totalPrice = society.priceVAT(society.discount(totalBasePrice));
                 System.out.println("Uthyrningen varade i "+ rentalItemDaysRented + " dagar.\n"+ totalPrice);}
              break;
-            case "H" : System.out.println(" - TOTAL UTHYRNINGSHISTORIK - ");
+            case "H" : System.out.println(" - AKTUELL UTHYRNINGSHISTORIK - ");
             rental.printRentalsList();
                    break;
             case "B" : System.out.println("Backar"); subMeny= false; break;

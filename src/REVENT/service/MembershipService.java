@@ -96,7 +96,7 @@ public class MembershipService extends MemberRegistry {
             String memberStatus = scan.nextLine();
             updateMemberStatus(m,memberStatus);
             System.out.println("Medlem uppdaterad!");
-        }else {System.out.println("Backar till huvudmeny");}
+        }else {System.out.println("Kliver ur. Gör ett nytt val!");}
             }}
 
      public void updateMemberName(Member member,String newName){
