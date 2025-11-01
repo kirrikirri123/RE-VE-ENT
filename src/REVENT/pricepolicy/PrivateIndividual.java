@@ -2,7 +2,6 @@ package REVENT.pricepolicy;
 
 public class PrivateIndividual implements PricePolicy{
 
-
     @Override
     public String priceVAT(double x) {
         double inkVAT = x * 1.25;

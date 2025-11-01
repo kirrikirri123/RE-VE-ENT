@@ -6,11 +6,10 @@ import REVENT.enity.Member;
 import java.util.HashMap;
 
 
-public class RentalRegistry { // borde ändras till en lista av Rentalobjekt som värde så kan samma medlem hyra flera saker.
-    protected HashMap<Member,Rental> rentalList = new HashMap<Member,Rental>();
+public class RentalRegistry {
+    protected HashMap<Member,Rental> rentalList = new HashMap<Member,Rental>();// borde ändras till <Member,List<Rental> .med Rentalobjekts lista som värde så kan samma medlem hyra flera saker.
 
 public RentalRegistry(){}
-
 
     public HashMap<Member,Rental> getRentalList() {
         return rentalList;

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Rental extends RentalRegistry {
     // hanterar hyrestid och priser och kopplar ihop item och member. Flytta alla metoder till RentalService och låt denna klass bara skapa Rentalobjekt.
-    // PRoffstipset var att lägga ett member objekt i fält också. Varför gör jag inte det??
+    // Proffstipset var att lägga ett member objekt i fält också. Varför gör jag inte det??
     private Item rentalItem;
     private int rentDays;
     private LocalDate startOfRent;
@@ -61,7 +61,7 @@ public class Rental extends RentalRegistry {
 
     //_____________________________________________________________________________________
 
-    public Rental newRental(Item rentalItem, int rentDays, String startOfRent) { // Valfritt datum skrivet YYYYMMDD!
+    public Rental newRental(Item rentalItem, int rentDays, String startOfRent) { // Datum YYYY-MM-DD
         Rental rental = new Rental(rentalItem, rentDays, startOfRent);
         return rental;
     }
@@ -70,19 +70,16 @@ public class Rental extends RentalRegistry {
         Rental rental = new Rental(rentalItem, rentDays);
         return rental;
     }
-
     // skapa start
     public LocalDate createDateOfRent(String YYYYMMDD) {
         DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate datetOfRent = LocalDate.parse(YYYYMMDD, styleDate);
         return datetOfRent;    }
-
     //önska antal
     public int rentDaysChoice(Scanner scan) {
         System.out.println("Hur många dagar önskas hyra?");
         int days = scan.nextInt();
         return days;    }
-
     // byt antal
     public void changeRentDays(Member member, int x) {
         rentalList.get(member).setRentDays(x);
@@ -96,17 +93,14 @@ public class Rental extends RentalRegistry {
         return rentalList.get(member).rentalItem.getDayPrice();
     }
 
-    public String returnRentalItemName(Member member){
+    public String returnRentalItemName(Member member) {
         return rentalList.get(member).rentalItem.getName();
     }
-
-    public Rental returnsRentalObject(Member member){
-        return rentalList.get(member);
-        }
 
     public void chooseDateInfo(String when){
         System.out.println(when + " vilket datum? Skriv i formatet ÅÅÅÅ-MM-DD.");
     }
+
     public String userChooseDate(String dateStartString){
          return dateStartString.replace(' ','-');}
 
@@ -134,6 +128,7 @@ public class Rental extends RentalRegistry {
         int actualDays =(int) actualDaysLong;
         changeRentDays(member,actualDays);
          }
+
     public void sumRentalsList() {
         System.out.println("Hyrestransaktioner idag: ");
         double sum=0;
@@ -152,9 +147,11 @@ public double calculateDay(double dayPrice,int days) {
     if(days>=30){ price = priceMonth(dayPrice,days);}
         return price;
 }
- public double priceMonth(double dayPrice,double days) {
+
+public double priceMonth(double dayPrice,double days) {
         return (days/30)*((dayPrice*30)*0.7);
  }
+
     @Override
     public String toString() {
         return " Hyresobjekt: " + this.rentalItem.getName() + ". Hyrestid i dagar: " + this.rentDays+". Datum för hyresstart: "+ this.startOfRent + " Återlämnad ? "+ this.returned;

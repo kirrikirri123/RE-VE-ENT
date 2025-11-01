@@ -14,7 +14,7 @@ public class RentalService extends Inventory {
     //public Inventory(inventory){
     // this.inventory = inventory;}
 
-    //hanterar Item-funktioner kopplade till uthyrning. Flytta alla rentalmetoder hit.
+    //hanterar Item-funktioner kopplade till uthyrning. Flytta alla rentalmetoder hit!
 
 
     public void addItemToList(Item item) {
@@ -60,7 +60,7 @@ public class RentalService extends Inventory {
         for(int i = 0; i < itemsList.size();i++){
             if(itemsList.get(i).getName().equalsIgnoreCase(prod)){
                 indexItem = i;}}
-           return indexItem; } //Tagit in prodnamn, kollat av listan. Sparat index där prodnamn har match och returnerar detta.
+           return indexItem; }
 
     public void removeItemFromList(String prod, Scanner scan) {
         List<Item> removeI = searchItemByName(prod); //listan som returneras sparas i denna lista.

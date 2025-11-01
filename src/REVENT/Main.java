@@ -19,9 +19,9 @@ public class Main {
                 case "5":System.out.println("Avsluta programmet"); isRunning = false; break;
                 default: System.out.println("Något blev fel. Försök igen. Välj mellan [1] till [5]");
             }
-        }// utanför loop..
+        }
 
-                   } // utanför programmet..
+                   }
 
     }
 

@@ -9,13 +9,11 @@ public class Inventory {
     // Databas för produkter.
     protected List<Item> itemsList = new ArrayList<>();
 
-
     public Inventory (){}
 
     public List<Item> getItemsList(){
         return itemsList;
     }
-
     public void setItemsList(List<Item> itemsList) {
         this.itemsList = itemsList;
     }
