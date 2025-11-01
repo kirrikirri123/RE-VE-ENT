@@ -2,6 +2,7 @@ package REVENT.utils;
 
 import REVENT.pricepolicy.PrivateIndividual;
 import REVENT.pricepolicy.Society;
+import REVENT.repository.MemberRegistry;
 import REVENT.service.Rental;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
@@ -14,10 +15,10 @@ import java.util.Scanner;
 public class Menu {
     // Lägg in objekt av Listorna här så objekt nedan kan ta in dem och användas den vägen! - Mer rätt!
     // Inventory inventory = new Inventory();
-    // MemberRegestry memberRegestry = new memberRegestry();
-    //RentalRegestry rentalRegestry = new rentalRegestry();
+    MemberRegistry memberRegistry = new MemberRegistry();
+    //RentalRegistry rentalRegistry = new RentalRegistry();
 
-    MembershipService memberService = new MembershipService(); //Skicka in memberRegestry  Även PI och S objektet?
+    MembershipService memberService = new MembershipService(memberRegistry); //Även PI och S objektet?
     RentalService rentalService = new RentalService(); //Skicka in inventory och rentalRegestry
     Rental rental = new Rental();
     PrivateIndividual privateIndividual = new PrivateIndividual();

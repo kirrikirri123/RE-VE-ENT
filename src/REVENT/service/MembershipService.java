@@ -5,18 +5,27 @@ import REVENT.repository.MemberRegistry;
 
 import java.util.*;
 
-public class MembershipService extends MemberRegistry {
+public class MembershipService {
 // Hanterar memberfunktioner. Medlemsrabatter? Ta isf in PI och S objekten hit istället?
-    //private MemberRegestry = memberregestry;
-    //public MembergRegestry(memberregestry){
-    // this.memberregestry = memberregestry;}
+    private MemberRegistry memberRegistry;
+
+    public MembershipService(MemberRegistry memberRegistry){
+     this.memberRegistry = memberRegistry;}
+
+    public MemberRegistry getMemberRegistry() {
+        return memberRegistry;
+    }
+
+    public void setMemberRegistry(MemberRegistry memberRegistry) {
+        this.memberRegistry = memberRegistry;
+    }
 
     public void newMember(String id, String name, String memberStatus){
         Member member = new Member(id,name,memberStatus);
         addMemberList(member); }
 
     public void addMemberList(Member member) {
-        getMemberRegistryList().add(member);
+        getMemberRegistry().getMemberRegistryList().add(member);
     }
     public void searchInfo(){
         System.out.println("Vilken medlem? Ange namn eller personnummer/organistationsnummer.");
@@ -24,13 +33,13 @@ public class MembershipService extends MemberRegistry {
 
     public List<Member> searchMemberByNameIdReturnList(String nameOrId){ // söker lägger in i templista och returnerar lista
         List<Member> foundM= new ArrayList<>();
-                for(Member m : memberRegistryList){
+                for(Member m : getMemberRegistry().getMemberRegistryList()){
             if(m.getName().contains(nameOrId)|| m.getId().equals(nameOrId)){
                 foundM.add(m);}}return foundM;}
 
     public Member searchMemberByNameOrIdReturnMember(String nameOrId) {
         Member foundMember = null;
-        for (Member m : memberRegistryList) {
+        for (Member m : getMemberRegistry().getMemberRegistryList()) {
             if (m.getName().equalsIgnoreCase(nameOrId) || m.getId().equals(nameOrId)) {
                 foundMember = m;
             }
@@ -59,7 +68,7 @@ public class MembershipService extends MemberRegistry {
         {System.out.println("Hittade "+m.getName()+" med ID: "+ m.getId()+ ". Ska "+ m.getName()+" tas bort från listan? JA / NEJ");
             String removeUser = scan.nextLine();
             if(removeUser.equalsIgnoreCase("ja")){
-           memberRegistryList.removeAll(foundMatches);
+                getMemberRegistry().getMemberRegistryList().removeAll(foundMatches);
                     System.out.println("Medlem borttagen.");
     }}}
 
@@ -70,8 +79,8 @@ public class MembershipService extends MemberRegistry {
         }}
 
     public void printMemberReg() {
-        if (memberRegistryList.isEmpty()){System.out.println("Listan är tom.");}
-        for (Member m: memberRegistryList){
+        if (getMemberRegistry().getMemberRegistryList().isEmpty()){System.out.println("Listan är tom.");}
+        for (Member m: getMemberRegistry().getMemberRegistryList()){
             System.out.println(m);
         }
     }

@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MemberRegistry {
-protected Set<Member> memberRegistryList = new HashSet<>();
+private Set<Member> memberRegistryList = new HashSet<>();
 
 public MemberRegistry(){}
 
