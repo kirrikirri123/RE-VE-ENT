@@ -11,7 +11,7 @@ public class Society implements PricePolicy{
     }
 
     @Override
-    public void discount() { //*1
-        //totaltpris * denna metod = riktigt pris.
+    public double discount(double x) {
+        return x * 1;
     }
 }
