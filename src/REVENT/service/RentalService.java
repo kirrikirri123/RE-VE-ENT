@@ -3,25 +3,43 @@ package REVENT.service;
 import REVENT.enity.BouncyCastle;
 import REVENT.enity.Item;
 import REVENT.enity.MascotCostume;
+import REVENT.enity.Member;
 import REVENT.repository.Inventory;
+import REVENT.repository.RentalRegistry;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class RentalService {
-    //hanterar Item-funktioner kopplade till uthyrning. Flytta alla rentalmetoder hit!
+    //Hanterar Item-funktioner kopplade till uthyrning.
     private Inventory inventory;
+    private RentalRegistry rentalRegistry;
 
-    public RentalService(Inventory inventory){
-     this.inventory = inventory;}
+    public RentalService (){}
+
+    public RentalService(Inventory inventory, RentalRegistry rentalRegistry){
+     this.inventory = inventory;
+     this.rentalRegistry = rentalRegistry;
+    }
+
+    public RentalRegistry getRentalRegistry() {
+        return rentalRegistry;}
+
+    public void setRentalRegistry(RentalRegistry rentalRegistry) {
+        this.rentalRegistry = rentalRegistry;    }
 
     public Inventory getInventory() {
         return inventory;
     }
+
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
+// _______________________________________________________________________
 
     public void addItemToList(Item item) {
         getInventory().getItemsList().add(item);
@@ -111,4 +129,97 @@ public class RentalService {
         newMascotItem("Nallebjörn"," Kramgo, lurvig brunbjörndräkt", 200,"Året om");
         newMascotItem("Tomten"," Premium tomtedräkt. Kvalitetskläder naturligt skägg. Inga skor medföljer.", 1000,"Jul");
     }
+
+    //______________________________________________________________________
+    //Metoder som tidigare låg i Rental.
+    public LocalDate createDateOfRent(String YYYYMMDD) {
+        DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate datetOfRent = LocalDate.parse(YYYYMMDD, styleDate);
+        return datetOfRent;    }
+
+    public Rental newRental(Item rentalItem, int rentDays, String startOfRent) { // Datum YYYY-MM-DD
+        Rental rental = new Rental(rentalItem, rentDays, startOfRent);
+        return rental;
+    }
+
+    public Rental newRental(Item rentalItem, int rentDays) { // Blir default dagens datum.
+        Rental rental = new Rental(rentalItem, rentDays);
+        return rental;
+    }
+     //önska antal
+    public int rentDaysChoice(Scanner scan) {
+        System.out.println("Hur många dagar önskas hyra?");
+        int days = scan.nextInt();
+        return days;    }
+    // byt antal
+    public void changeRentDays(Member member, int x) {
+        getRentalRegistry().getRentalList().get(member).setRentDays(x);
+    }
+    //visa valt antal
+    public int rentalCountDays(Member member) {
+        return getRentalRegistry().getRentalList().get(member).getRentDays();
+    }
+
+    public double returnRentalDayPrice(Member member) {
+        return getRentalRegistry().getRentalList().get(member).getRentalItem().getDayPrice();
+    }
+
+    public String returnRentalItemName(Member member) {
+        return getRentalRegistry().getRentalList().get(member).getRentalItem().getName();
+    }
+
+    public void chooseDateInfo(String when){
+        System.out.println(when + " vilket datum? Skriv i formatet ÅÅÅÅ-MM-DD.");
+    }
+
+    public String userChooseDate(String dateStartString){
+        return dateStartString.replace(' ','-');}
+
+    public void rentalsToList(Member member, Rental rentalItem) {
+        getRentalRegistry().getRentalList().put(member, rentalItem);
+        addHistory(rentalItem, member);
+    }
+
+    public void addHistory(Rental rentalItem, Member member) {
+        member.getHistoryMember().add(rentalItem);
+    }
+
+    public void newRentAddRentListAndMemHistory(Item rentalItem, int rentDays, Member member) {
+        rentalsToList(member, newRental(rentalItem, rentDays));
+        // kan man göra hela kedjan i denna metod?
+    }
+
+    public void printRentalsList() {
+        for(Map.Entry<Member,Rental> entry :getRentalRegistry().getRentalList().entrySet()) {
+            System.out.println(entry.getKey() + " - "+ entry.getValue());}}
+
+    public void countActualDays(String stopDate, Member member){ // här finns risk att det är ett förstort tal i long när de konverteras till int.
+        LocalDate stopRent = createDateOfRent(stopDate);
+        LocalDate theStartOfRent = getRentalRegistry().getRentalList().get(member).getStartOfRent();
+        long actualDaysLong = stopRent.toEpochDay() - theStartOfRent.toEpochDay();
+        int actualDays =(int) actualDaysLong;
+        changeRentDays(member,actualDays);
+    }
+
+    public void sumRentalsList() {
+        System.out.println("Hyrestransaktioner idag: ");
+        double sum=0;
+        for (Map.Entry<Member, Rental> entry : getRentalRegistry().getRentalList().entrySet()) {
+            double price = calculateDay(entry.getValue().getRentalItem().getDayPrice(),entry.getValue().getRentDays());//OBS! Tar inte in pricepolicy.
+            sum +=price;
+            System.out.println(entry.getKey()+ " Produkt: "+ entry.getValue().getRentalItem().getName() +
+                    ". Dagspris: " + entry.getValue().getRentalItem().getDayPrice()+ "kr. Hyrestid i dagar: "+ entry.getValue().getRentDays()
+                    + ". Beräknad intäkt på uthyrningen bortsett från ev.rabatter: "+price+ " kr.");
+        }System.out.println("Totala intäkter på affärer gjorda idag beräknas bli: "+ sum + "kr ex. moms.");}
+
+    public double calculateDay(double dayPrice,int days) {
+        double price = dayPrice * days;
+        if(days>=30){ price = priceMonth(dayPrice,days);}
+        return price;
+    }
+
+    public double priceMonth(double dayPrice,double days) {
+        return (days/30)*((dayPrice*30)*0.7);
+    }
+
 }
