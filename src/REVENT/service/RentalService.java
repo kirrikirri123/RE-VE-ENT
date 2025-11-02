@@ -9,6 +9,7 @@ import REVENT.repository.RentalRegistry;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,18 +30,12 @@ public class RentalService {
     public RentalRegistry getRentalRegistry() {
         return rentalRegistry;}
 
-    public void setRentalRegistry(RentalRegistry rentalRegistry) {
-        this.rentalRegistry = rentalRegistry;    }
-
     public Inventory getInventory() {
         return inventory;
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-// _______________________________________________________________________
-
+    // _______________________________________________________________________
+// Produkt metoder
     public void addItemToList(Item item) {
         getInventory().getItemsList().add(item);
     }
@@ -48,8 +43,7 @@ public class RentalService {
     public void searchProd() {
         System.out.println("Vilken produkt?");
     }
-
-    public List<Item> searchItemByName(String prod) {
+     public List<Item> searchItemByName(String prod) {
         List<Item> foundI = new ArrayList<>();
         for (Item i : getInventory().getItemsList()) {
             if (i.getName().equalsIgnoreCase(prod)) {
@@ -88,7 +82,7 @@ public class RentalService {
 
     public void removeItemFromList(String prod, Scanner scan) {
         List<Item> removeI = searchItemByName(prod); //listan som returneras sparas i denna lista.
-        if(removeI.isEmpty()){System.out.println("Hittade ingen match."); return;}
+        if(removeI.isEmpty()){System.out.println("Hittade ingen matchning."); return;}
         for (Item item : removeI){
                 System.out.println("Hittade produkten: " + item.getName() + ", " + item.getDescription() + "." +
                         " Ska produkten tas bort från listan? JA / NEJ");
@@ -131,8 +125,8 @@ public class RentalService {
     }
 
     //______________________________________________________________________
-    //Metoder som tidigare låg i Rental.
-    public LocalDate createDateOfRent(String YYYYMMDD) {
+    //Uthyrningsmetoder
+    public LocalDate createDateOfRent(String YYYYMMDD) throws DateTimeParseException {
         DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate datetOfRent = LocalDate.parse(YYYYMMDD, styleDate);
         return datetOfRent;    }
@@ -190,6 +184,7 @@ public class RentalService {
     }
 
     public void printRentalsList() {
+        if (getRentalRegistry().getRentalList().isEmpty()){System.out.println("Inga uthyrningar gjorda.");}
         for(Map.Entry<Member,Rental> entry :getRentalRegistry().getRentalList().entrySet()) {
             System.out.println(entry.getKey() + " - "+ entry.getValue());}}
 
