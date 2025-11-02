@@ -6,6 +6,7 @@ import REVENT.enity.Member;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -60,7 +61,7 @@ public class Rental {
 
     //_____________________________________________________________________________________
     // skapa start
-    public LocalDate createDateOfRent(String YYYYMMDD) {
+    public LocalDate createDateOfRent(String YYYYMMDD) throws DateTimeParseException {
         DateTimeFormatter styleDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate datetOfRent = LocalDate.parse(YYYYMMDD, styleDate);
         return datetOfRent;    }

@@ -16,10 +16,6 @@ public class MembershipService {
         return memberRegistry;
     }
 
-    public void setMemberRegistry(MemberRegistry memberRegistry) {
-        this.memberRegistry = memberRegistry;
-    }
-
     public void newMember(String id, String name, String memberStatus){
         Member member = new Member(id,name,memberStatus);
         addMemberList(member); }
@@ -31,16 +27,16 @@ public class MembershipService {
         System.out.println("Vilken medlem? Ange namn eller personnummer/organistationsnummer.");
     }
 
-    public List<Member> searchMemberByNameIdReturnList(String nameOrId){ // söker lägger in i templista och returnerar lista
+    public List<Member> searchMemberByNameIdReturnList(String nameOrId){
         List<Member> foundM= new ArrayList<>();
                 for(Member m : getMemberRegistry().getMemberRegistryList()){
-            if(m.getName().contains(nameOrId)|| m.getId().equals(nameOrId)){
+            if(m.getName().contains(nameOrId)||m.getName().equalsIgnoreCase(nameOrId)|| m.getId().equals(nameOrId)){
                 foundM.add(m);}}return foundM;}
 
-    public Member searchMemberByNameOrIdReturnMember(String nameOrId) {
+    public Member searchMemberByNameOrIdReturnMember(String nameOrId) throws NullPointerException{
         Member foundMember = null;
         for (Member m : getMemberRegistry().getMemberRegistryList()) {
-            if (m.getName().equalsIgnoreCase(nameOrId) || m.getId().equals(nameOrId)) {
+            if (m.getName().contains(nameOrId)||m.getName().equalsIgnoreCase(nameOrId) || m.getId().equals(nameOrId)) {
                 foundMember = m;
             }
         }
@@ -49,11 +45,10 @@ public class MembershipService {
 
     public void checkListPrintMembersFound(String nameOrId){
           List<Member> foundMatches = searchMemberByNameIdReturnList(nameOrId);
-            if(foundMatches.size()>= 2) {
+            if(foundMatches.size()>1) {
                 System.out.println("Hittade flera matchningar: ");
                 for (int i = 1; i < foundMatches.size(); i++) {
-                    System.out.println("Nr. " + i + foundMatches.get(i).getName() + foundMatches.get(i).getMemberStatus());}
-                // skriv er ut index i templistan så vi kan hitta det igen sen vid val??
+                    System.out.println("Nr. " + i + " " + foundMatches.get(i).getName() +" "+ foundMatches.get(i).getMemberStatus());}
             }else if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning.");}
              else { for(Member member : foundMatches){
                  String memberStatusPrint = null;
@@ -70,7 +65,7 @@ public class MembershipService {
             if(removeUser.equalsIgnoreCase("ja")){
                 getMemberRegistry().getMemberRegistryList().removeAll(foundMatches);
                     System.out.println("Medlem borttagen.");
-    }}}
+    }else{System.out.println("Avbryter borttagning.");}}}
 
     public void getMemberHistory(Member member){
         if(member.getHistoryMember().isEmpty()){System.out.println("Finns ingen historik på vald medlem.");}
@@ -105,7 +100,7 @@ public class MembershipService {
             String memberStatus = scan.nextLine();
             updateMemberStatus(m,memberStatus);
             System.out.println("Medlem uppdaterad!");
-        }else {System.out.println("Kliver ur. Gör ett nytt val!");}
+        }else {System.out.println("Avbryter uppdatering av medlem.");}
             }}
 
      public void updateMemberName(Member member,String newName){

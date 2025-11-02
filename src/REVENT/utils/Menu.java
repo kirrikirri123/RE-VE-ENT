@@ -11,6 +11,7 @@ import REVENT.enity.Member;
 import REVENT.service.MembershipService;
 import REVENT.service.RentalService;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -69,7 +70,7 @@ public class Menu {
             break;
             case "X" : System.out.println("Borttagning av produkt");
                 rentalService.searchProd();
-            String userRemove = scan.nextLine();
+            String userRemove = scan.nextLine().trim();
                 rentalService.removeItemFromList(userRemove,scan);
             break;
             case "B" : System.out.println("Backar"); subMeny = false; break;
@@ -87,16 +88,16 @@ public class Menu {
          switch (memberActionChoice.toUpperCase()) {
             case "NP":
                 System.out.println("NY MEDLEM - privatperson.\n Ange först personnummer och för och efternamn separerat med mellanslag.");
-                String memberId = scan.next();
-                String memberFname = scan.next() + " ";
-                String memberLname = scan.next();
+                String memberId = scan.next().trim();
+                String memberFname = scan.next().trim() + " ";
+                String memberLname = scan.next().trim();
                 clearingScan(scan);
                 memberService.newMember(memberId, memberFname + memberLname, "Privat");
                 System.out.println("Medlem skapad.");
                 break;
             case "NF":
                 System.out.println("NY MEDLEM - Förening.\n Ange först organisationsnummer och sedan namn på föreningen. Separerat med enter-slag.");
-                String socMemberId = scan.nextLine();
+                String socMemberId = scan.nextLine().trim();
                 String socMemberName = scan.nextLine();
                 memberService.newMember(socMemberId, socMemberName, "Förening");
                 System.out.println("Medlem skapad.");
@@ -123,8 +124,10 @@ public class Menu {
                 break;
             case "H": System.out.println("- MEDLEMSHISTORIK -"); // dold i menyval av säkerhetskäl. Bara superadmins vet.
                 memberService.searchInfo();
-                String userHistory = scan.nextLine();
-                 memberService.getMemberHistory(memberService.searchMemberByNameOrIdReturnMember(userHistory));
+                String userHistory = scan.nextLine().trim();
+                try {
+                 memberService.getMemberHistory(memberService.searchMemberByNameOrIdReturnMember(userHistory));}
+                catch (NullPointerException ex){ System.out.println("Felaktig medlemsinfo. Prova igen");}
                 break;
             case "E":
                 //Test Case
@@ -150,8 +153,9 @@ public class Menu {
 
             case "N" : System.out.println("NY UTHYRNING.");
                 System.out.println("Vilken kund?\n Om det är en helt ny kund,gå åter till Huvudmenyn och välj Medlemmar på nr.1");
-                String userMemberInput = scan.nextLine();
-                Member choosenRentMember =  memberService.searchMemberByNameOrIdReturnMember(userMemberInput);
+                String userMemberInput = scan.nextLine().trim();
+                try {
+                    Member choosenRentMember =  memberService.searchMemberByNameOrIdReturnMember(userMemberInput);
                 rentalService.searchProd();
                 String userProdRental = scan.nextLine();
                 Item choosenRentItem= rentalService.searchItemByNameReturnItem(userProdRental); // Stora möjligheter till Exeptions.
@@ -161,39 +165,45 @@ public class Menu {
                 rentalService.chooseDateInfo("Starta");
                 String userChooseDateOfStart = scan.nextLine();
                 String dateStartRent=rentalService.userChooseDate(userChooseDateOfStart);
-                System.out.println("Granska bokning: "+ choosenRentItem.getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar, från och med "+ dateStartRent);
-                System.out.println("Bekräfta med J för att boka. Annars X.");
+                 System.out.println("Granska bokning: "+ choosenRentItem.getName() + " uthyres till "+ choosenRentMember.getName() +" i "+ rentDayInput + " dagar, från och med "+ dateStartRent);
+                 System.out.println("Bekräfta med J för att boka. Annars X.");
                 String validateChoice = scan.nextLine();
-                if(validateChoice.startsWith("J")) {
-                Rental newRentalItem = rentalService.newRental(rentalService.getInventory().getItemsList().get(indexOfProd),rentDayInput,dateStartRent);
-                rentalService.rentalsToList(choosenRentMember,newRentalItem);
-                LocalDate estimatedReturnDate = rental.createDateOfRent(dateStartRent).plusDays(rentDayInput);
-                System.out.println("Bokat! "+ "Planerat återlämningsdatum: "+ estimatedReturnDate);
-                }else{System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
+                if(validateChoice.startsWith("J") || validateChoice.equalsIgnoreCase("J")) {
+                    Rental newRentalItem = rentalService.newRental(rentalService.getInventory().getItemsList().get(indexOfProd), rentDayInput, dateStartRent);
+                    rentalService.rentalsToList(choosenRentMember, newRentalItem);
+                    LocalDate estimatedReturnDate = rental.createDateOfRent(dateStartRent).plusDays(rentDayInput);
+                    System.out.println("Bokat! " + "Planerat återlämningsdatum: " + estimatedReturnDate);
+                }else { System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
+                } catch (NullPointerException ex) { System.out.println(" ! - Dubbelkolla medlemsinfo. Något blev fel.");
+                }
                 break;
             case "A" : System.out.println(" - AVSLUTA UTHYRNING -");
                 System.out.println("Återlämning av uthyrd produkt ");
                 memberService.searchInfo();
                 String rentalitemReturn = scan.nextLine();
-                Member returningMember =memberService.searchMemberByNameOrIdReturnMember(rentalitemReturn);
-                String rentalitemName = rentalService.returnRentalItemName(returningMember);
+                try {
+                    Member returningMember = memberService.searchMemberByNameOrIdReturnMember(rentalitemReturn);
+                 String rentalitemName = rentalService.returnRentalItemName(returningMember);
                 rentalService.chooseDateInfo("Åter");
-                String userReturnRentalItem = scan.nextLine();
+                String userReturnRentalItem = scan.nextLine().trim();
                 String dateStopRent =rentalService.userChooseDate(userReturnRentalItem);
                 System.out.println("Granska återlämning: " + dateStopRent + " återlämnade " + returningMember.getName() + " produkten " + rentalitemName + " ?  JA /NEJ " );
                 String userValidationReturn = scan.nextLine();
-                if (userValidationReturn.equalsIgnoreCase("JA")){System.out.println("Återlämnad!");
-                rentalService.getRentalRegistry().getRentalList().get(returningMember).setReturned(true);
-                rentalService.countActualDays(dateStopRent,returningMember);} else {System.out.println("Avbryter återlämning.");return;}
+                if (userValidationReturn.equalsIgnoreCase("JA")) {
+                    System.out.println("Återlämnad!");
+                    rentalService.getRentalRegistry().getRentalList().get(returningMember).setReturned(true);
+                    rentalService.countActualDays(dateStopRent, returningMember);
+                } else {System.out.println("Avbryter återlämning.");return;}
                 //Prisuträkning
                 double rentalItemDayprice = rentalService.returnRentalDayPrice(returningMember);
                 int rentalItemDaysRented = rentalService.rentalCountDays(returningMember);
                 double totalBasePrice = rentalService.calculateDay(rentalItemDayprice, rentalItemDaysRented);
-                if(returningMember.getMemberStatus().equalsIgnoreCase("privat")){
-                 String totalPrice = privateIndividual.priceVAT(privateIndividual.discount(totalBasePrice));
-                System.out.println("Utyrningen varade i "+ rentalItemDaysRented + " dagar.\n"+ totalPrice);
+                if(returningMember.getMemberStatus().equalsIgnoreCase("privat")) {
+                    String totalPrice = privateIndividual.priceVAT(privateIndividual.discount(totalBasePrice));
+                    System.out.println("Utyrningen varade i " + rentalItemDaysRented + " dagar.\n" + totalPrice);
                 }else{ String totalPrice = society.priceVAT(society.discount(totalBasePrice));
                 System.out.println("Uthyrningen varade i "+ rentalItemDaysRented + " dagar.\n"+ totalPrice);}
+                } catch (NullPointerException e) {System.out.println("! - Dubbelkolla medlemsinfo. Något blev fel.");}
                 break;
             case "H" : System.out.println(" - AKTUELL UTHYRNINGSHISTORIK - ");
                 rentalService.printRentalsList();
