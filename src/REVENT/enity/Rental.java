@@ -1,14 +1,8 @@
-package REVENT.service;
-
-import REVENT.repository.RentalRegistry;
-import REVENT.enity.Item;
-import REVENT.enity.Member;
+package REVENT.enity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Map;
-import java.util.Scanner;
 
 public class Rental {
     // Proffstipset var att lägga ett member objekt i fält också. Varför inte gjort det??

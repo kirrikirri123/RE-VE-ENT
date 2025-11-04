@@ -14,7 +14,4 @@ public class Inventory {
     public List<Item> getItemsList(){
         return itemsList;
     }
-    public void setItemsList(List<Item> itemsList) {
-        this.itemsList = itemsList;
-    }
-}
+ }

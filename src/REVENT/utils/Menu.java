@@ -5,7 +5,7 @@ import REVENT.pricepolicy.Society;
 import REVENT.repository.Inventory;
 import REVENT.repository.MemberRegistry;
 import REVENT.repository.RentalRegistry;
-import REVENT.service.Rental;
+import REVENT.enity.Rental;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
 import REVENT.service.MembershipService;
@@ -174,8 +174,9 @@ public class Menu {
                     LocalDate estimatedReturnDate = rental.createDateOfRent(dateStartRent).plusDays(rentDayInput);
                     System.out.println("Bokat! " + "Planerat återlämningsdatum: " + estimatedReturnDate);
                 }else { System.out.println("Ångrat dig? Inget är bokat. Påbörja din bokning igen.");}
-                } catch (NullPointerException ex) { System.out.println(" ! - Dubbelkolla medlemsinfo. Något blev fel.");
-                }
+                } catch (NullPointerException ex) { System.out.println(" ! - Dubbelkolla medlemsinfo. Något blev fel. Ingen bokning är gjord.");
+                }catch (DateTimeException ex) {System.out.println("! - Avläsning av datum misslyckades. Testa formatet: 2025-MM-DD. Ingen bokning är gjord.");}
+                System.out.println();
                 break;
             case "A" : System.out.println(" - AVSLUTA UTHYRNING -");
                 System.out.println("Återlämning av uthyrd produkt ");

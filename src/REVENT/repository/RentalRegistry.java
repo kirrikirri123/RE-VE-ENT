@@ -1,6 +1,6 @@
 package REVENT.repository;
 
-import REVENT.service.Rental;
+import REVENT.enity.Rental;
 import REVENT.enity.Member;
 
 import java.util.HashMap;
@@ -14,7 +14,5 @@ public RentalRegistry(){}
     public HashMap<Member,Rental> getRentalList() {
         return rentalList;
  }
-    public void setRentalList(HashMap<Member,Rental> rentalList) {
-        this.rentalList = rentalList;
-    }
+
 }
