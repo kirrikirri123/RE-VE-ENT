@@ -1,6 +1,7 @@
 package REVENT.service;
 
 import REVENT.enity.Member;
+import REVENT.enity.Rental;
 import REVENT.repository.MemberRegistry;
 
 import java.util.*;

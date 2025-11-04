@@ -5,7 +5,7 @@ import REVENT.pricepolicy.Society;
 import REVENT.repository.Inventory;
 import REVENT.repository.MemberRegistry;
 import REVENT.repository.RentalRegistry;
-import REVENT.service.Rental;
+import REVENT.enity.Rental;
 import REVENT.enity.Item;
 import REVENT.enity.Member;
 import REVENT.service.MembershipService;

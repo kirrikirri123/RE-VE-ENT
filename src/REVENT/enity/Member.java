@@ -1,7 +1,5 @@
 package REVENT.enity;
 
-import REVENT.service.Rental;
-
 import java.util.LinkedList;
 import java.util.List;
 
