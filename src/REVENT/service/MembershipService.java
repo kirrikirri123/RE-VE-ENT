@@ -47,8 +47,8 @@ public class MembershipService {
           List<Member> foundMatches = searchMemberByNameIdReturnList(nameOrId);
             if(foundMatches.size()>1) {
                 System.out.println("Hittade flera matchningar: ");
-                for (int i = 1; i < foundMatches.size(); i++) {
-                    System.out.println("Nr. " + i + " " + foundMatches.get(i).getName() +" "+ foundMatches.get(i).getMemberStatus());}
+                for (int i = 0,j =1; i < foundMatches.size(); i++, j++) {
+                    System.out.println("Nr. " + j + " " + foundMatches.get(i).getName() +" "+ foundMatches.get(i).getMemberStatus());}
             }else if(foundMatches.isEmpty()){System.out.println("Hittade ingen matchning.");}
              else { for(Member member : foundMatches){
                  String memberStatusPrint = null;
